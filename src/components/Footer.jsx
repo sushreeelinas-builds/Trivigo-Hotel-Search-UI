@@ -86,21 +86,14 @@ export default function Footer() {
 
   return (
     <footer className="w-full bg-[#171717] h-[] text-white px-5 sm:px-10 lg:px-16 pt-10">
-
       <div className="max-w-[1600px] mx-auto ">
-
-        {/* TOP HEADER */}
         <div className="flex items-center justify-between mb-10 ">
-
-          {/* Trivago Logo */}
           <a
             href="#"
             className="text-2xl font-extrabold tracking-tight"
           >
             <span className="text-white">trivago</span>
           </a>
-
-          {/* Social Media Icons */}
           <div className="flex items-center gap-1">
 
             {socialLinks.map((social) => {
@@ -122,14 +115,8 @@ export default function Footer() {
 
           </div>
         </div>
-
-        {/* MAIN FOOTER CONTENT */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap- lg:gap-10">
-
-          {/* COLUMN 1 */}
           <div className="space-y-2">
-
-            {/* COUNTRY SELECTOR */}
             <div>
               <label
                 htmlFor="country"
@@ -139,7 +126,6 @@ export default function Footer() {
               </label>
 
               <div className="relative max-w-[325px]">
-
                 <select
                   id="country"
                   value={country}
@@ -156,7 +142,6 @@ export default function Footer() {
                     </option>
                   ))}
                 </select>
-
                 <ChevronDown
                   size={21}
                   className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
@@ -164,8 +149,6 @@ export default function Footer() {
 
               </div>
             </div>
-
-            {/* GOOGLE BUTTON */}
             <div>
               <a
                 href="https://www.google.com/preferences/source"
@@ -185,8 +168,6 @@ export default function Footer() {
                 preferred source on Google.
               </p>
             </div>
-
-            {/* COMPANY LINKS */}
             <div>
               <h3 className="text-x font-bold mb-">
                 Company
@@ -207,7 +188,6 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* PRODUCT LINKS */}
             <div>
               <h3 className="text-x font-bold mb-">
                 Our products
@@ -230,10 +210,7 @@ export default function Footer() {
 
           </div>
 
-          {/* COLUMN 2 */}
           <div className="space-y-8">
-
-            {/* TERMS AND POLICIES */}
             <div>
               <h3 className="text-x font-bold mb-3">
                 Terms and policies
@@ -253,8 +230,6 @@ export default function Footer() {
 
               </div>
             </div>
-
-            {/* SUPPORT */}
             <div>
               <h3 className="text-x font-bold mb-2">
                 Support
@@ -271,23 +246,14 @@ export default function Footer() {
                     {link}
                   </a>
                 ))}
-
               </div>
             </div>
-
           </div>
-
-          {/* COLUMN 3 */}
           <div className="space-y-8">
-
-            {/* SIGN IN CARD */}
             <div className="border-2 border-[#008bd2] rounded-xl p-2 sm:p-5">
-
               <h2 className="text-x sm:text-xl font-bold mb-3">
                 Sign in for member-exclusive benefits
               </h2>
-
-              {/* Benefits */}
               <div className="space-y-2 mb-3">
 
                 <p className="flex items-center gap-2 text-base">
@@ -305,10 +271,7 @@ export default function Footer() {
                   />
                   Loyalty deals and member prices
                 </p>
-
               </div>
-
-              {/* Sign In Button */}
               <button
                 onClick={() => alert("Sign in clicked!")}
                 className="w-full bg-[#0783c5] hover:bg-[#006ba5] text-white font-bold text-lg py-2 rounded-xl transition-all duration-300 hover:shadow-lg"
@@ -317,8 +280,6 @@ export default function Footer() {
               </button>
 
             </div>
-
-            {/* COMPANY ADDRESS */}
             <div className="text-sm text-gray-300 leading-7">
 
               <p>
@@ -331,14 +292,9 @@ export default function Footer() {
               <p>
                 Copyright 2026 trivago | All rights reserved.
               </p>
-
             </div>
-
           </div>
-
         </div>
-
-        {/* BOTTOM BORDER */}
         <div className="border-t border-gray-800 mt-10 pt-5 text-center text-xs text-gray-500">
           Hotel search made easy with trivago.
         </div>

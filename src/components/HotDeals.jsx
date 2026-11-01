@@ -1,7 +1,7 @@
-import { useRef } from "react";
 
-/* Add your own photos: put files in /public/hotels and set image: "/hotels/bloom.jpg".
-   Cards without an image show a neutral placeholder. */
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+
 const deals = [
   {
     id: 1,
@@ -62,7 +62,7 @@ const deals = [
   {
     id: 5,
     name: "Grand Mercure Mysore",
-    location: "Mysore, Australia",
+    location: "Mysore, India",
     score: 8.8,
     label: "Excellent",
     reviews: "26k",
@@ -90,79 +90,101 @@ const deals = [
 ];
 
 const ArrowRight = ({ className = "h-5 w-5", stroke = 2.4 }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke}
-       strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={stroke}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
     <path d="m9 5 7 7-7 7" />
   </svg>
 );
 
 const TrendDown = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"
-       strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.6"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="h-4 w-4"
+  >
     <path d="m3 6 6 6 4-4 8 8" />
     <path d="M15 16h6v-6" />
   </svg>
 );
 
-const ImagePlaceholder = () => (
-  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-sky-100 via-neutral-100 to-amber-100 text-neutral-400">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"
-         strokeLinecap="round" strokeLinejoin="round" className="h-12 w-12" aria-hidden="true">
-      <path d="M3 20V8l9-4 9 4v12M3 20h18M9 20v-5h6v5M8 10h.01M12 10h.01M16 10h.01" />
-    </svg>
-  </div>
-);
-
-function DealCard({ deal }) {
+function DealCard({ deal, onClick }) {
   const isDrop = deal.badge.type === "dropped";
+
   return (
-    <article className="flex w-[100px]  shrink-0 snap-start flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_16px_rgba(0,0,0,0.1)] sm:w-[290px] h-[400px]">
-      <div className="h-[800px] w-full w-[50px] overflow-hidden bg-neutral-100">
-        {deal.image ? (
-          <img src={deal.image} alt={deal.name} loading="lazy" className="h-full w-full object-cover" />
-        ) : (
-          <ImagePlaceholder />
-        )}
+    <article
+      onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      role="link"
+      tabIndex={0}
+      className="flex w-[290px] h-[400px] shrink-0 snap-start cursor-pointer flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_16px_rgba(0,0,0,0.1)] transition hover:-translate-y-1 hover:shadow-xl"
+    >
+      <div className="h-[170px] w-full shrink-0 overflow-hidden bg-neutral-100">
+        <img
+          src={deal.image}
+          alt={deal.name}
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
       </div>
 
-      <div className="flex flex-1 flex-col px-[15px]  pt-2">
-        <h3 className="truncate text-[18px] font-bold tracking-tight">{deal.name}</h3>
-        <p className="mt-1.1 text-[14px]  text-black">{deal.location}</p>
+      <div className="flex flex-1 flex-col px-5 pt-1 pb-8">
+        <h3 className="truncate text-[19px] font-bold tracking-tight">
+          {deal.name}
+        </h3>
 
-        <p className="mt-2 flex items-center text-[13px]">
-          <span className="rounded-full bg-green-700 px-2 py-0. text-[13px] font-bold text-white">
+        <p className="mt- text-sm text-gray-600">{deal.location}</p>
+
+        <p className="mt-1 flex items-center gap-2 text-sm">
+          <span className="rounded bg-green-700 px-2 py-1 font-bold text-white">
             {deal.score.toFixed(1)}
           </span>
-          <span className="font-semibold ">{deal.label}</span>
-          <span className=" text-black">({deal.reviews})</span>
+          <span className="font-semibold">{deal.label}</span>
+          <span className="text-gray-500">({deal.reviews})</span>
         </p>
 
-        <p
-          className={`mt-2 inline-flex w-fit items-center gap- rounded-md bg-[#b5143c] px-1.5 py-0. text-[12px] font-bold text-white ${
-            isDrop ? "" : ""
-          }`}
-        >
+        <p className="mt-2 inline-flex w-fit items-center gap-1 rounded-md bg-[#b5143c] px-2 py-1 text-xs font-bold text-white">
           {isDrop && <TrendDown />}
           {deal.badge.text}
         </p>
 
-        <p className="mt-2 text-[12px]  text-black">{deal.provider}</p>
-        <p className="mt-1 flex items-baseline gap-1.5">
-          <span className="text-[20px] font-bold leading-none tracking-tight">{deal.price}</span>
-          <span className="text-[13px]  text-black">per night</span>
+        <p className="mt-1 text-sm text-gray-500">{deal.provider}</p>
+
+        <p className="mt- flex items-baseline gap-1.5">
+          <span className="text-xl font-bold">{deal.price}</span>
+          <span className="text-sm text-gray-500">per night</span>
         </p>
 
-        <div className="mt- flex items-end justify-between gap-3">
-          <div className="text-[12px] leading-6 text-black">
+        <div className="mt-auto flex items-end justify-between gap-2 pt-">
+          <div className="text-xs leading-6 mb-10 text-gray-600">
             <p>{deal.dates}</p>
             <p>{deal.perk}</p>
           </div>
+
           <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick();
+            }}
             aria-label={`View deal for ${deal.name}`}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-neutral-800 bg-white mb-2
-                       transition-colors hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tv-blue"
+            className="flex h-9 w-9 mb-10 shrink-0 items-center justify-center rounded-lg border border-gray-300 transition hover:bg-gray-100"
           >
-            <ArrowRight className="h-4 w-4" stroke={3} />
+            <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </div>
@@ -172,18 +194,43 @@ function DealCard({ deal }) {
 
 export default function HotDeals() {
   const scroller = useRef(null);
-  const next = () => scroller.current?.scrollBy({ left: 360, behavior: "smooth" });
+  const navigate = useNavigate();
+
+  const next = () => {
+    scroller.current?.scrollBy({
+      left: 360,
+      behavior: "smooth",
+    });
+  };
+
+  const openHotel = (hotel) => {
+    navigate("/hotel-results", {
+  state: {
+    hotel,
+  },
+});
+  };
 
   return (
-    <section className="mx-auto max-w-[1280px]   px-4 pb-10 sm:px-8 xl:px-0" aria-labelledby="hot-deals-title">
-      <div className="mb-6 flex items-center justify-between ">
-        <h2 id="hot-deals-title" className="text-3xl font-bold tracking-tight">
+    <section
+      className="mx-auto max-w-[1280px] px-4 pb-10 sm:px-8 xl:px-0"
+      aria-labelledby="hot-deals-title"
+    >
+      <div className="mb-6 flex items-center justify-between">
+        <h2
+          id="hot-deals-title"
+          className="text-2xl sm:text-3xl font-bold tracking-tight"
+        >
           Hot hotel deals right now
         </h2>
-        <a href="#" className="flex items-center gap-2 text-lg font-bold text-tv-blue hover:underline">
+
+        <button
+          onClick={() => openHotel(deals[0])}
+          className="flex items-center gap-2 text-sm sm:text-lg font-bold text-tv-blue hover:underline"
+        >
           See more deals
-          <ArrowRight className="h-5 w-5" />
-        </a>
+          <ArrowRight />
+        </button>
       </div>
 
       <div className="relative">
@@ -191,18 +238,21 @@ export default function HotDeals() {
           ref={scroller}
           className="flex snap-x gap-6 overflow-x-auto scroll-smooth px-1 pb-6 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {deals.map((d) => (
-            <DealCard key={d.id} deal={d} />
+          {deals.map((deal) => (
+            <DealCard
+              key={deal.id}
+              deal={deal}
+              onClick={() => openHotel(deal)}
+            />
           ))}
         </div>
 
         <button
           onClick={next}
           aria-label="Next deals"
-          className="absolute right-2 top-[290px] hidden h-11 w-11 items-center justify-center rounded-lg bg-white shadow-[0_2px_10px_rgba(0,0,0,0.2)]
-                     hover:bg-neutral-100 md:flex"
+          className="absolute right-2 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-lg hover:bg-neutral-100 md:flex"
         >
-          <ArrowRight className="h-5 w-5" />
+          <ArrowRight />
         </button>
       </div>
     </section>
