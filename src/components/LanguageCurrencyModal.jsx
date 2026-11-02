@@ -72,7 +72,6 @@ export default function LanguageCurrencyModal() {
 
   return (
     <>
-      {/* Language Button */}
       <button
         onClick={() => setIsOpen(true)}
         className="flex items-center gap-2 rounded-xl border border-black
@@ -95,7 +94,6 @@ export default function LanguageCurrencyModal() {
         <span>{currencySymbol[savedCurrency] || "₹"}</span>
       </button>
 
-      {/* Modal */}
       {isOpen && (
         <div
           onClick={handleClose}
@@ -107,7 +105,6 @@ export default function LanguageCurrencyModal() {
             className="w-full max-w-[435px] overflow-hidden
             rounded-2xl bg-white shadow-2xl animate-in fade-in zoom-in-95 duration-200"
           >
-            {/* Header */}
             <div className="flex items-center justify-between px-5 pt-5 pb-6">
               <h2 className="text-lg font-bold text-black">
                 Select language and currency
@@ -121,10 +118,8 @@ export default function LanguageCurrencyModal() {
               </button>
             </div>
 
-            {/* Form */}
             <div className="space-y-6 px-5 pb-6">
 
-              {/* Language */}
               <div>
                 <label className="mb-1 block text-sm text-gray-700">
                   Language
@@ -155,7 +150,6 @@ export default function LanguageCurrencyModal() {
                 </div>
               </div>
 
-              {/* Currency */}
               <div>
                 <label className="mb-1 block text-sm text-gray-700">
                   Currency
@@ -187,7 +181,6 @@ export default function LanguageCurrencyModal() {
               </div>
             </div>
 
-            {/* Footer */}
             <div className="flex justify-end border-t border-gray-200 px-5 py-3">
               <button
                 onClick={handleApply}

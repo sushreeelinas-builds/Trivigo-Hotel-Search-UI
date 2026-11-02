@@ -80,7 +80,6 @@ export default function PlaceResult() {
   return (
     <div className="min-h-screen bg-[#f7f8fa] text-gray-900">
 
-      {/* Header */}
       <header className="sticky top-0 z-40 border-b bg-white px-4 py-4 shadow-sm sm:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between">
 
@@ -101,7 +100,6 @@ export default function PlaceResult() {
 
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
 
-        {/* Page Heading */}
         <div className="mb-8">
           <p className="mb-2 text-sm font-semibold text-sky-600">
             YOUR HOTEL SEARCH
@@ -116,7 +114,6 @@ export default function PlaceResult() {
           </p>
         </div>
 
-        {/* Destination Card */}
         <div className="mb-6 overflow-hidden rounded-2xl border bg-white shadow-sm">
 
           {image && (
@@ -145,7 +142,6 @@ export default function PlaceResult() {
           </div>
         </div>
 
-        {/* Travel Summary */}
         <section className="mb-6 rounded-2xl border bg-white p-5 shadow-sm sm:p-7">
 
           <h2 className="mb-6 text-xl font-bold">
@@ -154,7 +150,6 @@ export default function PlaceResult() {
 
           <div className="grid gap-5 sm:grid-cols-2">
 
-            {/* Check-in */}
             <div className="flex items-start gap-3">
               <div className="rounded-xl bg-sky-50 p-3 text-sky-600">
                 <CalendarDays size={22} />
@@ -168,7 +163,6 @@ export default function PlaceResult() {
               </div>
             </div>
 
-            {/* Check-out */}
             <div className="flex items-start gap-3">
               <div className="rounded-xl bg-sky-50 p-3 text-sky-600">
                 <CalendarDays size={22} />
@@ -182,7 +176,6 @@ export default function PlaceResult() {
               </div>
             </div>
 
-            {/* Guests */}
             <div className="flex items-start gap-3">
               <div className="rounded-xl bg-sky-50 p-3 text-sky-600">
                 <Users size={22} />
@@ -196,7 +189,6 @@ export default function PlaceResult() {
               </div>
             </div>
 
-            {/* Rooms */}
             <div className="flex items-start gap-3">
               <div className="rounded-xl bg-sky-50 p-3 text-sky-600">
                 <BedDouble size={22} />
@@ -213,7 +205,6 @@ export default function PlaceResult() {
           </div>
         </section>
 
-        {/* Price Information */}
         <section className="mb-7 rounded-2xl border bg-white p-5 shadow-sm sm:p-7">
 
           <div className="mb-5 flex items-center gap-3">
@@ -251,7 +242,6 @@ export default function PlaceResult() {
           </p>
         </section>
 
-        {/* Continue Button */}
         <button
           onClick={handleContinue}
           className="flex w-full items-center justify-center gap-3 rounded-xl bg-[#007fc5] px-6 py-4 font-bold text-white shadow-sm transition hover:bg-[#006ba8]"

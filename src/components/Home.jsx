@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { searchUrl } from "../data/cities";
 
 import HotDeals from "./HotDeals.jsx";
 import DealsBanner from "./DealsBanner";
@@ -129,6 +130,7 @@ const partners = [
     className: "text-2xl font-black text-neutral-800",
   },
 ];
+
 
 function Header() {
   return (
@@ -277,7 +279,6 @@ function SearchCard() {
 
   const weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
-
   const selectQuickDate = (type) => {
     const today = new Date(2026, 10, 1);
 
@@ -305,7 +306,6 @@ function SearchCard() {
     );
   };
 
-
   const updateCount = (setter, value, minimum) => {
     setter((previous) => Math.max(minimum, previous + value));
   };
@@ -313,7 +313,6 @@ function SearchCard() {
   const totalGuests = adults + children;
 
   const guestLabel = `${totalGuests} Guests, ${rooms} Room${rooms > 1 ? "s" : ""}`;
-
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -347,19 +346,29 @@ function SearchCard() {
     setShowGuests(false);
     setShowDestinations(false);
 
-    navigate("/hotels", {
-      state: searchData,
-    });
+    navigate(
+      searchUrl({
+        city: searchData.destination,
+        checkIn: searchData.checkIn,
+        checkOut: searchData.checkOut,
+        adults,
+        children,
+        rooms,
+      }),
+      { state: searchData }
+    );
   };
-
 
   const field =
     "flex items-center gap-3 px-5 py-3 text-left transition-colors hover:bg-neutral-50";
 
   return (
     <section className="bg-gradient-to-b from-neutral-100 to-neutral-50/30 pb-14 pt-[50px]">
-      <div className="mx-auto max-w-[1330px] px-4 sm:px-8">
+
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-8">
+
         <div className="relative z-20 mx-auto w-full max-w-[1410px] rounded-2xl bg-white px-5 pb-9 pt-9 shadow-[0_6px_24px_rgba(0,0,0,0.08)] sm:px-10">
+
           <h1 className="text-2xl font-bold tracking-tight sm:text-[34px]">
             Save up to 55% on your next hotel stay
           </h1>
@@ -373,6 +382,7 @@ function SearchCard() {
             className="relative mt-9 grid overflow-visible rounded-2xl border border-neutral-300 bg-white lg:grid-cols-[minmax(250px,1fr)_260px_280px_auto]"
           >
             <div className="relative min-w-0">
+
               <label
                 className={`flex min-h-[74px] cursor-text items-center gap-4 rounded-l-2xl px-5 py-3 ${
                   showDestinations
@@ -380,11 +390,15 @@ function SearchCard() {
                     : ""
                 }`}
               >
+
                 <SearchIcon />
+
                 <span className="flex min-w-0 flex-1 flex-col">
+
                   <span className="text-sm text-neutral-500">
                     Destination
                   </span>
+
                   <input
                     value={destination}
                     onChange={(e) => {
@@ -399,7 +413,9 @@ function SearchCard() {
                     placeholder="Where to?"
                     className="w-full bg-transparent text-base font-semibold outline-none placeholder:font-normal"
                   />
+
                 </span>
+
                 {destination && (
                   <button
                     type="button"
@@ -459,10 +475,15 @@ function SearchCard() {
                       Search for "{destination}"
                     </button>
                   )}
+
                 </div>
               )}
+
             </div>
+
+
             <div className="relative border-t border-neutral-300 lg:border-l lg:border-t-0">
+
               <button
                 type="button"
                 onClick={() => {
@@ -476,19 +497,30 @@ function SearchCard() {
                     : ""
                 }`}
               >
+
                 <CalendarIcon />
+
                 <span className="flex flex-col">
+
                   <span className="text-sm text-neutral-500">
                     Check-in/out
                   </span>
+
                   <span className="font-bold">
                     {formatDate(checkIn)} - {formatDate(checkOut)}
                   </span>
+
                 </span>
+
               </button>
+
+
               {showCalendar && (
                 <div className="absolute left-1/2 top-[82px] z-50 w-[min(800px,calc(100vw-32px))] -translate-x-1/2 rounded-2xl bg-white p-5 shadow-[0_15px_35px_rgba(0,0,0,0.3)] sm:p-7">
+
+
                   <div className="mb-5 flex items-center justify-between">
+
                     <button
                       type="button"
                       onClick={() => changeMonth(-1)}
@@ -498,6 +530,7 @@ function SearchCard() {
                     </button>
 
                     <div className="grid flex-1 grid-cols-2 text-center font-bold">
+
                       <span>
                         {calendarMonth.toLocaleDateString("en-US", {
                           month: "long",
@@ -515,6 +548,7 @@ function SearchCard() {
                           year: "numeric",
                         })}
                       </span>
+
                     </div>
 
                     <button
@@ -524,10 +558,14 @@ function SearchCard() {
                     >
                       ›
                     </button>
+
                   </div>
 
+
                   <div className="grid grid-cols-2 gap-3 sm:gap-6">
+
                     {[0, 1].map((offset) => {
+
                       const month = new Date(
                         calendarMonth.getFullYear(),
                         calendarMonth.getMonth() + offset,
@@ -535,16 +573,22 @@ function SearchCard() {
                       );
 
                       const days = getCalendarDays(month);
+
                       return (
                         <div key={offset} className="min-w-0">
+
                           <div className="mb-3 grid grid-cols-7 rounded-xl bg-neutral-100 py-3 text-center text-xs font-semibold sm:text-sm">
+
                             {weekdays.map((day) => (
                               <span key={day}>{day}</span>
                             ))}
+
                           </div>
 
                           <div className="grid grid-cols-7 gap-y-1 text-center">
+
                             {days.map((date, index) => {
+
                               if (!date) {
                                 return (
                                   <span key={`empty-${index}`} />
@@ -586,7 +630,10 @@ function SearchCard() {
                   </div>
 
                   <div className="my-5 border-t border-neutral-200" />
+
+
                   <div className="flex flex-wrap gap-2">
+
                     {[
                       { label: "Tonight", value: "today" },
                       { label: "Tomorrow night", value: "tomorrow" },
@@ -608,7 +655,9 @@ function SearchCard() {
 
                   </div>
 
+
                   <div className="mt-5 flex items-center justify-between">
+
                     <span className="text-sm text-neutral-500">
                       {formatDate(checkIn)} - {formatDate(checkOut)}
                     </span>
@@ -621,12 +670,17 @@ function SearchCard() {
                     >
                       Apply
                     </button>
+
                   </div>
+
                 </div>
               )}
+
             </div>
 
+
             <div className="relative border-t border-neutral-300 lg:border-l lg:border-t-0">
+
               <button
                 type="button"
                 onClick={() => {
@@ -640,18 +694,28 @@ function SearchCard() {
                     : ""
                 }`}
               >
+
                 <GuestsIcon />
+
                 <span className="flex flex-col">
+
                   <span className="text-sm text-neutral-500">
                     Guests and rooms
                   </span>
+
                   <span className="font-bold">
                     {guestLabel}
                   </span>
+
                 </span>
+
               </button>
+
+
               {showGuests && (
                 <div className="absolute right-0 top-[82px] z-50 w-[min(440px,calc(100vw-32px))] rounded-2xl bg-white p-6 shadow-[0_15px_35px_rgba(0,0,0,0.3)] sm:p-8">
+
+
                   {[
                     {
                       label: "Adults",
@@ -672,15 +736,18 @@ function SearchCard() {
                       min: 1,
                     },
                   ].map((item) => (
+
                     <div
                       key={item.label}
                       className="mb-6 flex items-center justify-between gap-3"
                     >
+
                       <span className="font-bold">
                         {item.label}
                       </span>
 
                       <div className="flex items-center gap-3">
+
                         <button
                           type="button"
                           disabled={item.value <= item.min}
@@ -695,6 +762,7 @@ function SearchCard() {
                         <span className="w-10 text-center text-lg">
                           {item.value}
                         </span>
+
                         <button
                           type="button"
                           onClick={() =>
@@ -704,19 +772,30 @@ function SearchCard() {
                         >
                           +
                         </button>
+
                       </div>
+
                     </div>
+
                   ))}
+
+
                   <div className="border-t border-neutral-200 pt-6">
+
                     <label className="flex cursor-pointer items-center justify-between gap-3">
+
                       <span>
+
                         <span className="block font-bold">
                           Pet-friendly
                         </span>
+
                         <span className="text-sm text-neutral-600">
                           Only show stays that allow pets
                         </span>
+
                       </span>
+
                       <input
                         type="checkbox"
                         checked={petFriendly}
@@ -725,9 +804,14 @@ function SearchCard() {
                         }
                         className="h-5 w-5 accent-tv-blue"
                       />
+
                     </label>
+
                   </div>
+
+
                   <div className="mt-7 flex items-center justify-between">
+
                     <button
                       type="button"
                       onClick={() => {
@@ -740,6 +824,7 @@ function SearchCard() {
                     >
                       RESET
                     </button>
+
                     <button
                       type="button"
                       onClick={() => setShowGuests(false)}
@@ -747,62 +832,93 @@ function SearchCard() {
                     >
                       Apply
                     </button>
+
                   </div>
+
                 </div>
               )}
+
             </div>
+
+
             <div className="flex items-center border-t border-neutral-300 p-2 lg:border-t-0">
+
               <button
                 type="submit"
                 className="h-[54px] w-full rounded-lg bg-tv-blue px-9 text-lg font-bold text-white transition-colors hover:bg-tv-blue-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tv-blue"
               >
                 Search
               </button>
+
             </div>
+
           </form>
+
+
           <ul className="mt-10 flex flex-wrap items-center justify-between gap-x-8 gap-y-4 px-2">
+
             {partners.map((p) => (
               <li key={p.name} className={p.className}>
                 {p.name}
               </li>
             ))}
+
             <li className="text-sm text-neutral-500">
               +100 more
             </li>
+
           </ul>
+
         </div>
       </div>
     </section>
   );
 }
 
+
 function PromoBanner() {
   return (
     <section className="mx-auto mt-12 max-w-[1260px] px-4 pb-16 sm:px-8 xl:px-0">
+
       <div className="relative flex h-[340px] overflow-hidden rounded-3xl bg-white shadow-[0_6px_24px_rgba(0,0,0,0.08)]">
+
+
         <div className="w-14 bg-tv-red sm:w-[65px]" />
         <div className="w-14 bg-tv-orange sm:w-[65px]" />
+
+
         <div className="flex flex-1 items-center pl-8 sm:pl-14">
+
           <h2 className="max-w-xs text-3xl font-bold leading-tight tracking-tight">
             Your shortcut to finding a great deal
           </h2>
+
         </div>
+
+
         <div className="relative hidden w-[480px] md:block">
+
           <div className="absolute left-1/2 top-6 h-full w-[280px] -translate-x-1/2 rounded-t-[36px] border-[10px] border-neutral-200 bg-white">
+
             <p className="mt-6 text-center text-xl font-extrabold text-red-200">
               trivago
             </p>
+
             <div className="mt-4 h-[110px] bg-gradient-to-r from-stone-300 via-stone-200 to-stone-300 opacity-70" />
+
             <p className="mt-3 px-3 text-lg font-semibold text-neutral-300">
               Hotel Divitis <span className="tracking-tight">★★★</span>
             </p>
+
             <button
               type="button"
               className="absolute left-1/2 top-[132px] w-[205px] -translate-x-1/2 rounded-lg bg-neutral-900 py-2 text-[15px] font-semibold text-white shadow-lg"
             >
               Start searching
             </button>
+
           </div>
+
 
           <span className="absolute right-6 top-10 rotate-12 rounded-md bg-red-100 px-2 py-1 text-red-300">
             %
@@ -815,9 +931,13 @@ function PromoBanner() {
           <span className="absolute bottom-24 left-2 rotate-[-10deg] rounded-md bg-blue-100 px-2 py-1 text-blue-300">
             %
           </span>
+
         </div>
 
+
         <div className="w-24 bg-tv-blue sm:w-[130px]" />
+
+
         <button
           type="button"
           aria-label="Replay animation"
@@ -825,26 +945,42 @@ function PromoBanner() {
         >
           <ReplayIcon />
         </button>
+
       </div>
+
     </section>
   );
 }
 
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
+
       <Header />
+
       <main>
+
         <SearchCard />
+
         <PromoBanner />
+
         <HotDeals />
+
         <DealsBanner />
+
         <BestTimeToBook />
+
         <PopularSearches />
+
         <DownloadApp />
+
         <PopularLinks />
+
         <Footer />
+
       </main>
+
     </div>
   );
 }

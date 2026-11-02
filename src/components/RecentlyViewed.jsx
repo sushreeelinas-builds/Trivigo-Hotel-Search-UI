@@ -1,102 +1,101 @@
-import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const RecentlyViewed = () => {
+export default function RecentlyViewed() {
+  const navigate = useNavigate();
+  const [recent, setRecent] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("trivagoRecent") || "[]");
+    } catch {
+      return [];
+    }
+  });
+
+  const clearAll = () => {
+    localStorage.removeItem("trivagoRecent");
+    setRecent([]);
+  };
+
+  const side = "flex w-full items-center gap-4 px-5 py-4 text-left hover:bg-neutral-50";
+
   return (
-    <div className="min-h-screen bg-white flex">
-
-      {/* LEFT SIDEBAR */}
-      <div className="w-[315px] border-r border-gray-100 min-h-screen pt-12">
-
-        {/* Back */}
-        <div className="flex items-center gap-4 px-6 mb-14 cursor-pointer">
+    <div className="flex min-h-screen bg-white">
+      <aside className="hidden min-h-screen w-[315px] shrink-0 border-r border-gray-100 pt-12 md:block">
+        <button type="button" onClick={() => navigate("/")} className="mb-14 flex items-center gap-4 px-6">
           <span className="text-3xl font-light">‹</span>
           <span className="text-[16px]">Back</span>
-        </div>
+        </button>
 
-        {/* Favourites */}
-        <div className="flex items-center gap-4 px-5 py-4 mb-4 cursor-pointer">
+        <button type="button" onClick={() => navigate("/favorites")} className={side}>
           <span className="text-[28px]">♡</span>
-          <span classNam="text-[17px]">Favourites</span>
-        </div>
+          <span className="text-[17px]">Favourites</span>
+        </button>
 
-        {/* Recently Viewed - ACTIVE */}
-        <div className="bg-[#e5f4ff] rounded-r-xl px-5 py-5 mb-4">
+        <div className="my-2 rounded-r-xl bg-[#e5f4ff] px-5 py-5">
           <div className="flex items-center gap-4">
             <span className="text-[25px] text-[#0071c2]">↶</span>
-
-            <span className="text-[17px] font-semibold text-[#006db6]">
-              Recently viewed
-            </span>
+            <span className="text-[17px] font-semibold text-[#006db6]">Recently viewed</span>
           </div>
         </div>
 
-        {/* Bookings */}
-        <div className="flex items-center gap-4 px-5 py-4 mb-4 cursor-pointer">
+        <button type="button" onClick={() => navigate("/my-bookings")} className={side}>
           <span className="text-[25px]">▢</span>
           <span className="text-[17px]">Bookings</span>
+        </button>
+      </aside>
+
+      <main className="flex-1 px-6 pt-8 md:px-7">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-4xl font-bold text-[#111827]">Recently viewed</h1>
+          {recent.length > 0 && (
+            <button type="button" onClick={clearAll} className="font-bold text-sky-700 underline">
+              Clear history
+            </button>
+          )}
         </div>
 
-        {/* Language */}
-        <div className="flex items-center gap-4 px-5 py-4 mb-4 cursor-pointer">
-          <span className="text-[25px]">◎</span>
-          <span className="text-[17px]">Language and currency</span>
-        </div>
-
-        {/* Help */}
-        <div className="flex items-center gap-4 px-5 py-4 cursor-pointer">
-          <span className="text-[25px]">?</span>
-          <span className="text-[17px]">Help and support</span>
-        </div>
-
-      </div>
-
-
-      {/* MAIN CONTENT */}
-      <div className="flex-1 px-7 pt-7">
-
-        <h1 className="text-[42px] font-bold text-[#111827]">
-          Recently viewed
-        </h1>
-
-        <p className="text-[20px] mt-10 text-[#111827]">
-          Explore stays and we’ll save them here so you can easily continue
-          your search later.
-        </p>
-
-
-        {/* Illustration */}
-        <div className="mt-8 flex justify-center">
-          <img
-            src="https://cf.bstatic.com/static/img/recently-viewed/recently-viewed-illustration.png"
-            alt="Recently viewed"
-            className="w-[80%] max-w-[1250px] h-[390px] object-contain"
-          />
-        </div>
-
-
-        {/* Search Button */}
-        <div className="flex justify-end mt-5 pr-5">
-          <button
-            className="
-              bg-[#0071c2]
-              hover:bg-[#005b9f]
-              text-white
-              font-bold
-              text-[18px]
-              px-10
-              py-4
-              rounded-xl
-              transition
-            "
-          >
-            Search stays
-          </button>
-        </div>
-
-      </div>
-
+        {recent.length === 0 ? (
+          <>
+            <p className="mt-8 text-xl text-[#111827]">
+              Explore stays and we’ll save them here so you can easily continue your search later.
+            </p>
+            <div className="mt-8 flex justify-end">
+              <button
+                type="button"
+                onClick={() => navigate("/hotels?city=Jaipur")}
+                className="rounded-xl bg-[#0071c2] px-10 py-4 text-lg font-bold text-white transition hover:bg-[#005b9f]"
+              >
+                Search stays
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="mt-8 grid gap-5 pb-10 sm:grid-cols-2 xl:grid-cols-3">
+            {recent.map((hotel) => (
+              <article key={hotel.id} className="overflow-hidden rounded-2xl border bg-white shadow-sm">
+                <img
+                  src={hotel.image}
+                  alt={hotel.name}
+                  onError={(e) => (e.currentTarget.style.background = "#e5e7eb")}
+                  className="h-44 w-full bg-neutral-200 object-cover"
+                />
+                <div className="p-4">
+                  <h2 className="font-bold">{hotel.name}</h2>
+                  <p className="text-sm text-gray-500">{hotel.location}</p>
+                  <p className="mt-2 font-bold text-sky-700">{hotel.price} / night</p>
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/hotel/${hotel.id}`, { state: { hotel } })}
+                    className="mt-3 w-full rounded-lg bg-sky-600 py-2 font-bold text-white hover:bg-sky-700"
+                  >
+                    View hotel
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </main>
     </div>
   );
-};
-
-export default RecentlyViewed;
+}

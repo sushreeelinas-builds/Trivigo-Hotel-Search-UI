@@ -70,7 +70,7 @@ export default function MyBookings() {
             </p>
 
             <button
-              onClick={() => navigate("/hotel-results")}
+              onClick={() => navigate("/hotels?city=Jaipur")}
               className="mt-6 rounded-lg bg-blue-700 px-6 py-3 font-semibold text-white"
             >
               Explore Hotels

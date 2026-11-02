@@ -68,7 +68,6 @@ export default function PopularLinks() {
     <section className="w-full bg-white px-4 sm:px-8 lg:px-16 py-10">
       <div className="max-w-[1250px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-5 ">
 
-        {/* MORE POPULAR SEARCHES */}
         <div>
           <h2 className="text-2xl sm:text-[28px] font-bold text-black mb-3">
             More popular searches
@@ -95,7 +94,6 @@ export default function PopularLinks() {
           </ScrollPanel>
         </div>
 
-        {/* INTERNATIONAL SITES */}
         <div>
           <h2 className="text-2xl sm:text-[28px] font-bold text-black mb-3">
             trivago international sites

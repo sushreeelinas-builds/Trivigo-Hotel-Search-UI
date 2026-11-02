@@ -4,9 +4,13 @@ import { Check, Bell, ShieldCheck } from "lucide-react";
 export default function DownloadApp() {
   return (
     <section className="w-full bg-white px-4 sm:px-8 lg:px-16 py-5">
+
       <div className="relative max-w-[1255px] mx-auto bg-[#df2450] rounded-2xl overflow-hidden h-[350px] min-h-[300px]">
+
         <div className="max-w-[11130px] mx-auto grid grid-cols-1 md:grid-cols-2 items-center min-h-[430px] px-6 sm:px-10 lg:px-16">
+
           <div className="relative z-5 text-white px-15 py- md:py-">
+
             <h1 className="text-xl sm:text-xl font-bold mb-4">
               Download the trivago app
             </h1>
@@ -34,7 +38,9 @@ export default function DownloadApp() {
               </div>
 
               <div className="flex flex-col gap-6">
+
                 <div className="flex items-center gap-7">
+
                   <div>
                     <h2 className="text-2xl sm:text-2xl font-bold">
                       170M+
@@ -43,6 +49,7 @@ export default function DownloadApp() {
                   </div>
 
                   <div className="w-px h-16 bg-white/80"></div>
+
                   <div>
                     <h2 className="text-3xl sm:text-2xl font-bold">
                       1M+
@@ -51,44 +58,51 @@ export default function DownloadApp() {
                       5-star reviews
                     </p>
                   </div>
+
                 </div>
 
                 
-      <div className="flex flex-row items-center gap-4 flex-nowrap">
-      <a
-         href="https://play.google.com/store/apps/details?id=com.trivago"
-         target="_blank"
-         rel="noreferrer"
-         className="inline-flex items-center justify-center bg-black border border-white/70 rounded-lg px-3 mb-25 py-2 w-[162px] h-[50px] shrink-0 hover:scale-105 transition-transform"
-        >
-        <img
-         src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-         alt="Get it on Google Play"
-         className="w-full h-full object-contain"
-        />
-      </a>
+<div className="flex flex-row items-center gap-4 flex-nowrap">
 
-     <a
-        href="https://apps.apple.com/app/trivago-hotels-travel/id376888389"
-        target="_blank"
-        rel="noreferrer"
-        className="inline-flex items-center justify-center mb-25 bg-black border border-white/70 rounded-lg px-3 py-2 w-[162px] h-[50px] shrink-0 hover:scale-105 transition-transform"
-        >
-        <img
-          src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-          alt="Download on the App Store"
-          className="w-full h-full object-contain"
-        />
-     </a>
+  <a
+    href="https://play.google.com/store/apps/details?id=com.trivago"
+    target="_blank"
+    rel="noreferrer"
+    className="inline-flex items-center justify-center bg-black border border-white/70 rounded-lg px-3 mb-25 py-2 w-[162px] h-[50px] shrink-0 hover:scale-105 transition-transform"
+  >
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+      alt="Get it on Google Play"
+      className="w-full h-full object-contain"
+    />
+  </a>
 
-    </div>
-    </div>
-  </div>
+  <a
+    href="https://apps.apple.com/app/trivago-hotels-travel/id376888389"
+    target="_blank"
+    rel="noreferrer"
+    className="inline-flex items-center justify-center mb-25 bg-black border border-white/70 rounded-lg px-3 py-2 w-[162px] h-[50px] shrink-0 hover:scale-105 transition-transform"
+  >
+    <img
+      src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+      alt="Download on the App Store"
+      className="w-full h-full object-contain"
+    />
+  </a>
+
 </div>
 
+
+              </div>
+            </div>
+          </div>
+
           <div className="relative hidden md:flex justify-center items-end h-[430px]">
+
             <div className="relative z-10 w-[255px] h-[400px] mb-10 bg-black rounded-[40px] border-[5px] border-gray-500 p-[9px] shadow-2xl translate-y-10">
+
               <div className="w-full h-full bg-white rounded-[29px] overflow-hidden">
+
                 <div className="h-[110px] flex justify-center items-center">
                   <h2 className="text-2xl font-extrabold tracking-tight">
                     <span className="text-[#df2450]">tri</span>

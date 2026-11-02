@@ -33,7 +33,7 @@ export default function Favorites() {
       JSON.stringify(hotel)
     );
 
-    navigate(`/hotel-details/${hotel.id}`, {
+    navigate(`/hotel/${hotel.id}`, {
       state: { hotel },
     });
   };
@@ -81,7 +81,7 @@ export default function Favorites() {
             </p>
 
             <button
-              onClick={() => navigate("/hotel-results")}
+              onClick={() => navigate("/hotels?city=Jaipur")}
               className="mt-6 rounded-lg bg-blue-700 px-6 py-3 font-semibold text-white"
             >
               Explore Hotels

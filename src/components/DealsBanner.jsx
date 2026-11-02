@@ -1,7 +1,34 @@
-
+import { useNavigate } from "react-router-dom";
 import { Percent, ChevronRight } from "lucide-react";
+import { searchUrl, findCity, fromISO, TODAY } from "../data/cities";
 
 export default function DealsBanner() {
+  const navigate = useNavigate();
+
+  const findDeals = () => {
+    let saved;
+    try {
+      saved = JSON.parse(localStorage.getItem("hotelSearchData") || "{}");
+    } catch {
+      saved = {};
+    }
+
+    const city = findCity(saved.destination)?.name || "Jaipur";
+    const checkInDate = fromISO(saved.checkIn);
+    const hasDates = checkInDate && checkInDate >= TODAY && saved.checkOut;
+
+    const url = searchUrl({
+      city,
+      checkIn: hasDates ? saved.checkIn : undefined,
+      checkOut: hasDates ? saved.checkOut : undefined,
+      adults: saved.adults || 2,
+      children: saved.children || 0,
+      rooms: saved.rooms || 1,
+    });
+
+    navigate(`${url}&deals=1`);
+  };
+
   return (
     <section className="px-4  lg:px-12 ">
       <div className="relative flex w-320 mx-18 h-15 items-center justify-between gap-2 overflow-hidden rounded-2xl bg-[#76d8f5] px-2 py-4 sm:px-8">
@@ -33,6 +60,7 @@ export default function DealsBanner() {
 
         <button
           type="button"
+          onClick={findDeals}
           className="relative z-10 flex shrink-0 items-center gap-2 rounded-xl border border-slate-900 bg-white px-4 py-3 text-sm font-bold text-slate-900 transition hover:bg-slate-100 sm:px-6"
         >
           Find deals

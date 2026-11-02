@@ -132,9 +132,9 @@ function DealCard({ deal, onClick }) {
       }}
       role="link"
       tabIndex={0}
-      className="flex w-[290px] h-[400px] shrink-0 snap-start cursor-pointer flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_16px_rgba(0,0,0,0.1)] transition hover:-translate-y-1 hover:shadow-xl"
+      className="flex w-[290px] h-[390px] shrink-0 snap-start cursor-pointer flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_16px_rgba(0,0,0,0.1)] transition hover:-translate-y-1 hover:shadow-xl"
     >
-      <div className="h-[170px] w-full shrink-0 overflow-hidden bg-neutral-100">
+      <div className="h-[180px] w-full shrink-0 overflow-hidden bg-neutral-100">
         <img
           src={deal.image}
           alt={deal.name}
@@ -143,35 +143,35 @@ function DealCard({ deal, onClick }) {
         />
       </div>
 
-      <div className="flex flex-1 flex-col px-5 pt-1 pb-8">
+      <div className="flex flex-1 flex-col px-5 pt-1 ">
         <h3 className="truncate text-[19px] font-bold tracking-tight">
           {deal.name}
         </h3>
 
-        <p className="mt- text-sm text-gray-600">{deal.location}</p>
+        <p className="mt- text-sm text-black">{deal.location}</p>
 
         <p className="mt-1 flex items-center gap-2 text-sm">
-          <span className="rounded bg-green-700 px-2 py-1 font-bold text-white">
+          <span className="rounded bg-green-700 px-2  font-bold text-white">
             {deal.score.toFixed(1)}
           </span>
           <span className="font-semibold">{deal.label}</span>
-          <span className="text-gray-500">({deal.reviews})</span>
+          <span className="">({deal.reviews})</span>
         </p>
 
-        <p className="mt-2 inline-flex w-fit items-center gap-1 rounded-md bg-[#b5143c] px-2 py-1 text-xs font-bold text-white">
+        <p className="mt-1 inline-flex w-fit items-center gap-1 rounded-md bg-[#b5143c] px-2 py-1 text-xs font-bold text-white">
           {isDrop && <TrendDown />}
           {deal.badge.text}
         </p>
 
-        <p className="mt-1 text-sm text-gray-500">{deal.provider}</p>
+        <p className="mt-1 text-sm text-black">{deal.provider}</p>
 
         <p className="mt- flex items-baseline gap-1.5">
           <span className="text-xl font-bold">{deal.price}</span>
-          <span className="text-sm text-gray-500">per night</span>
+          <span className="text-sm text-black">per night</span>
         </p>
 
-        <div className="mt-auto flex items-end justify-between gap-2 pt-">
-          <div className="text-xs leading-6 mb-10 text-gray-600">
+        <div className="mt-auto flex items-end justify-between ">
+          <div className="text-xs mb-5 leading-5 text-black">
             <p>{deal.dates}</p>
             <p>{deal.perk}</p>
           </div>
@@ -182,7 +182,7 @@ function DealCard({ deal, onClick }) {
               onClick();
             }}
             aria-label={`View deal for ${deal.name}`}
-            className="flex h-9 w-9 mb-10 shrink-0 items-center justify-center rounded-lg border border-gray-300 transition hover:bg-gray-100"
+            className="flex h-9 w-9 shrink-0 mb-6 items-center justify-center rounded-lg border border-gray-300 transition hover:bg-gray-100"
           >
             <ArrowRight className="h-4 w-4" />
           </button>
@@ -204,11 +204,10 @@ export default function HotDeals() {
   };
 
   const openHotel = (hotel) => {
-    navigate("/hotel-results", {
-  state: {
-    hotel,
-  },
-});
+    const city = String(hotel.location || "").split(",")[0].trim();
+    navigate(`/hotels?city=${encodeURIComponent(city)}`, {
+      state: { hotel },
+    });
   };
 
   return (
