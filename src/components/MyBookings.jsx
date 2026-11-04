@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,11 +6,20 @@ export default function MyBookings() {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    setBookings(
-      JSON.parse(localStorage.getItem("trivagoBookings") || "[]")
-    );
+    try {
+      const savedBookings = JSON.parse(
+        localStorage.getItem("trivagoBookings") || "[]"
+      );
+
+      setBookings(
+        Array.isArray(savedBookings) ? savedBookings : []
+      );
+    } catch {
+      setBookings([]);
+    }
   }, []);
 
+  // Cancel booking
   const cancelBooking = (id) => {
     const updated = bookings.map((booking) =>
       booking.id === id
@@ -30,7 +38,9 @@ export default function MyBookings() {
   return (
     <div className="min-h-screen bg-gray-50">
 
+      {/* Header */}
       <header className="flex items-center justify-between border-b bg-white px-6 py-5">
+
         <button
           onClick={() => navigate("/")}
           className="text-3xl font-extrabold"
@@ -41,15 +51,17 @@ export default function MyBookings() {
 
         <button
           onClick={() => navigate("/")}
-          className="font-semibold text-blue-700"
+          className="font-semibold text-blue-700 hover:text-blue-900"
         >
           ← Home
         </button>
+
       </header>
 
+      {/* Main Content */}
       <main className="mx-auto max-w-5xl px-5 py-10">
 
-        <h1 className="text-3xl font-extrabold">
+        <h1 className="text-3xl font-extrabold text-gray-900">
           My Bookings
         </h1>
 
@@ -57,9 +69,14 @@ export default function MyBookings() {
           Manage your hotel bookings.
         </p>
 
+        {/* Empty State */}
         {bookings.length === 0 ? (
+
           <div className="mt-10 rounded-2xl bg-white p-12 text-center shadow-sm">
-            <div className="text-5xl text-gray-300">▤</div>
+
+            <div className="text-5xl text-gray-300">
+              ▤
+            </div>
 
             <h2 className="mt-4 text-xl font-bold">
               No bookings yet
@@ -71,29 +88,38 @@ export default function MyBookings() {
 
             <button
               onClick={() => navigate("/hotels?city=Jaipur")}
-              className="mt-6 rounded-lg bg-blue-700 px-6 py-3 font-semibold text-white"
+              className="mt-6 rounded-lg bg-blue-700 px-6 py-3 font-semibold text-white transition hover:bg-blue-800"
             >
               Explore Hotels
             </button>
+
           </div>
+
         ) : (
+
+          /* Booking Cards */
           <div className="mt-8 space-y-5">
 
             {bookings.map((booking) => (
+
               <article
                 key={booking.id}
                 className="overflow-hidden rounded-2xl border bg-white p-4 shadow-sm sm:flex sm:gap-5"
               >
+
+                {/* Hotel Image */}
                 <img
                   src={booking.image}
                   alt={booking.hotelName}
                   className="h-48 w-full rounded-xl object-cover sm:h-40 sm:w-52"
                 />
 
+                {/* Booking Details */}
                 <div className="flex-1 py-3">
 
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h2 className="text-xl font-bold">
+
+                    <h2 className="text-xl font-bold text-gray-900">
                       {booking.hotelName}
                     </h2>
 
@@ -106,62 +132,89 @@ export default function MyBookings() {
                     >
                       {booking.status}
                     </span>
+
                   </div>
 
                   <p className="mt-2 text-sm text-gray-500">
                     📍 {booking.location}
                   </p>
 
+                  {/* Dates and Guests */}
                   <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+
                     <p>
-                      <span className="text-gray-500">Check-in:</span>
+                      <span className="text-gray-500">
+                        Check-in:
+                      </span>
                       <br />
                       <strong>{booking.checkIn}</strong>
                     </p>
 
                     <p>
-                      <span className="text-gray-500">Check-out:</span>
+                      <span className="text-gray-500">
+                        Check-out:
+                      </span>
                       <br />
                       <strong>{booking.checkOut}</strong>
                     </p>
 
                     <p>
-                      <span className="text-gray-500">Guests:</span>
+                      <span className="text-gray-500">
+                        Guests:
+                      </span>
                       <br />
                       <strong>{booking.guests}</strong>
                     </p>
 
                     <p>
-                      <span className="text-gray-500">Rooms:</span>
+                      <span className="text-gray-500">
+                        Rooms:
+                      </span>
                       <br />
                       <strong>{booking.rooms}</strong>
                     </p>
+
                   </div>
 
+                  {/* Price and Cancel Button */}
                   <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t pt-4">
+
                     <div>
                       <p className="text-xs text-gray-500">
                         Total amount
                       </p>
-                      <p className="text-xl font-extrabold">
-                        ₹{Number(booking.totalPrice).toLocaleString("en-IN")}
+
+                      <p className="text-xl font-extrabold text-gray-900">
+                        ₹
+                        {Number(
+                          booking.totalPrice || 0
+                        ).toLocaleString("en-IN")}
                       </p>
                     </div>
 
                     {booking.status === "Confirmed" && (
+
                       <button
                         onClick={() => cancelBooking(booking.id)}
-                        className="rounded-lg border border-red-200 px-4 py-2 font-semibold text-red-600 hover:bg-red-50"
+                        className="rounded-lg border border-red-200 px-4 py-2 font-semibold text-red-600 transition hover:bg-red-50"
                       >
                         Cancel Booking
                       </button>
+
                     )}
+
                   </div>
+
                 </div>
+
               </article>
+
             ))}
+
           </div>
+
         )}
+
       </main>
     </div>
   );

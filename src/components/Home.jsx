@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { searchUrl } from "../data/cities";
@@ -91,9 +90,9 @@ const Logo = () => (
   <a
     href="/"
     aria-label="trivago home"
-    className="select-none text-[36px] font-extrabold leading-none tracking-tight"
+    className="select-none whitespace-nowrap text-[27px] font-extrabold leading-none tracking-tight sm:text-[32px] lg:text-[36px]"
   >
-    <span className="bg-gradient-to-r from-tv-red to-tv-orange bg-clip-text text-transparent">
+    <span className="bg-gradient-to-r  from-tv-red to-tv-orange bg-clip-text text-transparent">
       tri
     </span>
     <span className="text-tv-blue">vago</span>
@@ -131,14 +130,13 @@ const partners = [
   },
 ];
 
-
 function Header() {
   return (
     <header className="relative z-50 border-b border-neutral-200 bg-white">
-      <div className="mx-auto flex h-[65px] max-w-[1410px] items-center justify-between px-4 sm:px-8">
+      <div className="mx-auto flex min-h-[65px] max-w-[1410px] flex-wrap items-center justify-between gap-3 px-3 py-3 sm:px-6 lg:flex-nowrap lg:px-8">
         <Logo />
 
-        <nav className="flex items-center gap-2 sm:gap-3">
+        <nav className="flex min-w-0 flex-1 flex-wrap items-center justify-end gap-1.5 sm:gap-2 md:gap-3 lg:flex-none">
           <LanguageCurrencyModal />
           <SignInModal />
           <MenuModal />
@@ -363,38 +361,32 @@ function SearchCard() {
     "flex items-center gap-3 px-5 py-3 text-left transition-colors hover:bg-neutral-50";
 
   return (
-    <section className="bg-gradient-to-b from-neutral-100 to-neutral-50/30 pb-14 pt-[50px]">
-
-      <div className="mx-auto max-w-[1600px] px-4 sm:px-8">
-
-        <div className="relative z-20 mx-auto w-full max-w-[1410px] rounded-2xl bg-white px-5 pb-9 pt-9 shadow-[0_6px_24px_rgba(0,0,0,0.08)] sm:px-10">
-
-          <h1 className="text-2xl font-bold tracking-tight sm:text-[34px]">
+    <section className="bg-gradient-to-b from-neutral-100 to-neutral-50/30 pb-8 pt-7 sm:pb-12 sm:pt-10 lg:pb-14 lg:pt-[50px]">
+      <div className="mx-auto max-w-[1600px] px-3 sm:px-6 lg:px-8">
+        <div className="relative z-20 mx-auto w-full max-w-[1260px] rounded-xl bg-white px-4 pb-6 pt-6 shadow-[0_6px_24px_rgba(0,0,0,0.08)] sm:rounded-2xl sm:px-7 sm:pb-8 sm:pt-8 lg:px-10 lg:pb-9 lg:pt-9">
+          <h1 className="max-w-3xl text-[23px] font-bold leading-tight tracking-tight sm:text-[29px] lg:text-[34px]">
             Save up to 55% on your next hotel stay
           </h1>
 
-          <p className="mt-2 text-lg text-neutral-800 sm:text-xl">
+          <p className="mt-2 text-sm text-neutral-700 sm:text-lg lg:text-xl">
             We compare hotel prices from over 100 sites
           </p>
 
           <form
             onSubmit={handleSearch}
-            className="relative mt-9 grid overflow-visible rounded-2xl border border-neutral-300 bg-white lg:grid-cols-[minmax(250px,1fr)_260px_280px_auto]"
+            className="relative mt-6 grid grid-cols-1 overflow-visible rounded-xl border border-neutral-300 bg-white sm:mt-8 sm:rounded-2xl lg:grid-cols-[minmax(250px,1fr)_230px_250px_150px] xl:grid-cols-[minmax(250px,1fr)_260px_280px_auto]"
           >
             <div className="relative min-w-0">
-
               <label
-                className={`flex min-h-[74px] cursor-text items-center gap-4 rounded-l-2xl px-5 py-3 ${
+                className={`flex min-h-[68px] cursor-text items-center gap-3 rounded-l-2xl px-4 py-3 sm:min-h-[74px] sm:gap-4 sm:px-5 ${
                   showDestinations
                     ? "ring-2 ring-inset ring-tv-blue"
                     : ""
                 }`}
               >
-
                 <SearchIcon />
 
                 <span className="flex min-w-0 flex-1 flex-col">
-
                   <span className="text-sm text-neutral-500">
                     Destination
                   </span>
@@ -413,7 +405,6 @@ function SearchCard() {
                     placeholder="Where to?"
                     className="w-full bg-transparent text-base font-semibold outline-none placeholder:font-normal"
                   />
-
                 </span>
 
                 {destination && (
@@ -426,12 +417,10 @@ function SearchCard() {
                     <CloseIcon />
                   </button>
                 )}
-
               </label>
 
               {showDestinations && (
-                <div className="absolute left-0 top-[82px] z-50 max-h-[390px] w-full min-w-[310px] overflow-y-auto rounded-2xl bg-white shadow-[0_12px_30px_rgba(0,0,0,0.28)]">
-
+                <div className="absolute left-0 top-[calc(100%-2px)] z-50 max-h-[min(390px,65vh)] w-full min-w-0 overflow-y-auto rounded-xl bg-white shadow-[0_12px_30px_rgba(0,0,0,0.28)] sm:rounded-2xl">
                   <div className="bg-neutral-100 px-6 py-4 text-sm font-bold">
                     {destination
                       ? "Suggested destinations"
@@ -447,9 +436,8 @@ function SearchCard() {
                           setDestination(item.name);
                           setShowDestinations(false);
                         }}
-                        className="flex w-full items-center gap-5 px-6 py-3 text-left hover:bg-neutral-100"
+                        className="flex w-full items-center gap-4 px-4 py-3 text-left hover:bg-neutral-100 sm:gap-5 sm:px-6"
                       >
-
                         <span className="text-xl text-tv-blue">
                           {item.type === "Hotel" ? "▦" : "♧"}
                         </span>
@@ -463,7 +451,6 @@ function SearchCard() {
                             {item.type} · {item.location}
                           </span>
                         </span>
-
                       </button>
                     ))
                   ) : (
@@ -475,15 +462,11 @@ function SearchCard() {
                       Search for "{destination}"
                     </button>
                   )}
-
                 </div>
               )}
-
             </div>
 
-
-            <div className="relative border-t border-neutral-300 lg:border-l lg:border-t-0">
-
+            <div className="relative min-w-0 border-t border-neutral-300 lg:border-l lg:border-t-0">
               <button
                 type="button"
                 onClick={() => {
@@ -497,11 +480,9 @@ function SearchCard() {
                     : ""
                 }`}
               >
-
                 <CalendarIcon />
 
                 <span className="flex flex-col">
-
                   <span className="text-sm text-neutral-500">
                     Check-in/out
                   </span>
@@ -509,18 +490,12 @@ function SearchCard() {
                   <span className="font-bold">
                     {formatDate(checkIn)} - {formatDate(checkOut)}
                   </span>
-
                 </span>
-
               </button>
 
-
               {showCalendar && (
-                <div className="absolute left-1/2 top-[82px] z-50 w-[min(800px,calc(100vw-32px))] -translate-x-1/2 rounded-2xl bg-white p-5 shadow-[0_15px_35px_rgba(0,0,0,0.3)] sm:p-7">
-
-
+                <div className="absolute left-0 top-[calc(100%-2px)] z-50 w-[min(800px,calc(100vw-24px))] max-h-[75vh] overflow-y-auto rounded-xl bg-white p-3 shadow-[0_15px_35px_rgba(0,0,0,0.3)] sm:left-1/2 sm:w-[min(800px,calc(100vw-40px))] sm:-translate-x-1/2 sm:rounded-2xl sm:p-5 lg:p-7">
                   <div className="mb-5 flex items-center justify-between">
-
                     <button
                       type="button"
                       onClick={() => changeMonth(-1)}
@@ -529,8 +504,7 @@ function SearchCard() {
                       ‹
                     </button>
 
-                    <div className="grid flex-1 grid-cols-2 text-center font-bold">
-
+                    <div className="grid flex-1 grid-cols-1 text-center text-sm font-bold sm:grid-cols-2 sm:text-base">
                       <span>
                         {calendarMonth.toLocaleDateString("en-US", {
                           month: "long",
@@ -538,7 +512,7 @@ function SearchCard() {
                         })}
                       </span>
 
-                      <span>
+                      <span className="hidden sm:inline">
                         {new Date(
                           calendarMonth.getFullYear(),
                           calendarMonth.getMonth() + 1,
@@ -548,7 +522,6 @@ function SearchCard() {
                           year: "numeric",
                         })}
                       </span>
-
                     </div>
 
                     <button
@@ -558,14 +531,10 @@ function SearchCard() {
                     >
                       ›
                     </button>
-
                   </div>
 
-
-                  <div className="grid grid-cols-2 gap-3 sm:gap-6">
-
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
                     {[0, 1].map((offset) => {
-
                       const month = new Date(
                         calendarMonth.getFullYear(),
                         calendarMonth.getMonth() + offset,
@@ -575,24 +544,22 @@ function SearchCard() {
                       const days = getCalendarDays(month);
 
                       return (
-                        <div key={offset} className="min-w-0">
-
+                        <div
+                          key={offset}
+                          className={`min-w-0 ${
+                            offset === 1 ? "hidden sm:block" : ""
+                          }`}
+                        >
                           <div className="mb-3 grid grid-cols-7 rounded-xl bg-neutral-100 py-3 text-center text-xs font-semibold sm:text-sm">
-
                             {weekdays.map((day) => (
                               <span key={day}>{day}</span>
                             ))}
-
                           </div>
 
                           <div className="grid grid-cols-7 gap-y-1 text-center">
-
                             {days.map((date, index) => {
-
                               if (!date) {
-                                return (
-                                  <span key={`empty-${index}`} />
-                                );
+                                return <span key={`empty-${index}`} />;
                               }
 
                               const selected =
@@ -610,37 +577,29 @@ function SearchCard() {
                                     selected
                                       ? "bg-tv-blue font-bold text-white"
                                       : between
-                                      ? "bg-blue-100 text-tv-blue"
-                                      : "hover:bg-neutral-200"
+                                        ? "bg-blue-100 text-tv-blue"
+                                        : "hover:bg-neutral-200"
                                   }`}
                                 >
                                   {date.getDate()}
                                 </button>
                               );
-
                             })}
-
                           </div>
-
                         </div>
                       );
-
                     })}
-
                   </div>
 
                   <div className="my-5 border-t border-neutral-200" />
 
-
                   <div className="flex flex-wrap gap-2">
-
                     {[
                       { label: "Tonight", value: "today" },
                       { label: "Tomorrow night", value: "tomorrow" },
                       { label: "This weekend", value: "weekend" },
                       { label: "Next weekend", value: "nextWeekend" },
                     ].map((item) => (
-
                       <button
                         type="button"
                         key={item.value}
@@ -650,14 +609,10 @@ function SearchCard() {
                         <span className="mr-1">▣</span>
                         {item.label}
                       </button>
-
                     ))}
-
                   </div>
 
-
                   <div className="mt-5 flex items-center justify-between">
-
                     <span className="text-sm text-neutral-500">
                       {formatDate(checkIn)} - {formatDate(checkOut)}
                     </span>
@@ -670,17 +625,12 @@ function SearchCard() {
                     >
                       Apply
                     </button>
-
                   </div>
-
                 </div>
               )}
-
             </div>
 
-
-            <div className="relative border-t border-neutral-300 lg:border-l lg:border-t-0">
-
+            <div className="relative min-w-0 border-t border-neutral-300 lg:border-l lg:border-t-0">
               <button
                 type="button"
                 onClick={() => {
@@ -694,11 +644,9 @@ function SearchCard() {
                     : ""
                 }`}
               >
-
                 <GuestsIcon />
 
                 <span className="flex flex-col">
-
                   <span className="text-sm text-neutral-500">
                     Guests and rooms
                   </span>
@@ -706,16 +654,11 @@ function SearchCard() {
                   <span className="font-bold">
                     {guestLabel}
                   </span>
-
                 </span>
-
               </button>
 
-
               {showGuests && (
-                <div className="absolute right-0 top-[82px] z-50 w-[min(440px,calc(100vw-32px))] rounded-2xl bg-white p-6 shadow-[0_15px_35px_rgba(0,0,0,0.3)] sm:p-8">
-
-
+                <div className="absolute right-0 top-[calc(100%-2px)] z-50 w-[min(440px,calc(100vw-24px))] max-h-[75vh] overflow-y-auto rounded-xl bg-white p-4 shadow-[0_15px_35px_rgba(0,0,0,0.3)] sm:rounded-2xl sm:p-6 lg:p-8">
                   {[
                     {
                       label: "Adults",
@@ -736,18 +679,15 @@ function SearchCard() {
                       min: 1,
                     },
                   ].map((item) => (
-
                     <div
                       key={item.label}
                       className="mb-6 flex items-center justify-between gap-3"
                     >
-
                       <span className="font-bold">
                         {item.label}
                       </span>
 
                       <div className="flex items-center gap-3">
-
                         <button
                           type="button"
                           disabled={item.value <= item.min}
@@ -772,20 +712,13 @@ function SearchCard() {
                         >
                           +
                         </button>
-
                       </div>
-
                     </div>
-
                   ))}
 
-
                   <div className="border-t border-neutral-200 pt-6">
-
                     <label className="flex cursor-pointer items-center justify-between gap-3">
-
                       <span>
-
                         <span className="block font-bold">
                           Pet-friendly
                         </span>
@@ -793,7 +726,6 @@ function SearchCard() {
                         <span className="text-sm text-neutral-600">
                           Only show stays that allow pets
                         </span>
-
                       </span>
 
                       <input
@@ -804,14 +736,10 @@ function SearchCard() {
                         }
                         className="h-5 w-5 accent-tv-blue"
                       />
-
                     </label>
-
                   </div>
 
-
                   <div className="mt-7 flex items-center justify-between">
-
                     <button
                       type="button"
                       onClick={() => {
@@ -832,31 +760,22 @@ function SearchCard() {
                     >
                       Apply
                     </button>
-
                   </div>
-
                 </div>
               )}
-
             </div>
 
-
             <div className="flex items-center border-t border-neutral-300 p-2 lg:border-t-0">
-
               <button
                 type="submit"
-                className="h-[54px] w-full rounded-lg bg-tv-blue px-9 text-lg font-bold text-white transition-colors hover:bg-tv-blue-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tv-blue"
+                className="h-[50px] w-full rounded-lg bg-tv-blue px-6 text-base font-bold text-white transition-colors hover:bg-tv-blue-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tv-blue sm:h-[54px] sm:text-lg"
               >
                 Search
               </button>
-
             </div>
-
           </form>
 
-
-          <ul className="mt-10 flex flex-wrap items-center justify-between gap-x-8 gap-y-4 px-2">
-
+          <ul className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-4 px-1 sm:mt-9 sm:justify-between sm:gap-x-7 sm:px-2">
             {partners.map((p) => (
               <li key={p.name} className={p.className}>
                 {p.name}
@@ -866,40 +785,28 @@ function SearchCard() {
             <li className="text-sm text-neutral-500">
               +100 more
             </li>
-
           </ul>
-
         </div>
       </div>
     </section>
   );
 }
 
-
 function PromoBanner() {
   return (
-    <section className="mx-auto mt-12 max-w-[1260px] px-4 pb-16 sm:px-8 xl:px-0">
+    <section className="mx-auto mt-7 w-full max-w-[1260px] px-3 pb-10 sm:mt-10 sm:px-6 sm:pb-14 lg:mt-12 lg:px-8 lg:pb-16 xl:px-0">
+      <div className="relative flex min-h-[220px] overflow-hidden rounded-2xl bg-white shadow-[0_6px_24px_rgba(0,0,0,0.08)] sm:min-h-[270px] sm:rounded-3xl lg:h-[340px]">
+        <div className="w-3 shrink-0 bg-tv-red sm:w-10 lg:w-[65px]" />
+        <div className="w-3 shrink-0 bg-tv-orange sm:w-10 lg:w-[65px]" />
 
-      <div className="relative flex h-[340px] overflow-hidden rounded-3xl bg-white shadow-[0_6px_24px_rgba(0,0,0,0.08)]">
-
-
-        <div className="w-14 bg-tv-red sm:w-[65px]" />
-        <div className="w-14 bg-tv-orange sm:w-[65px]" />
-
-
-        <div className="flex flex-1 items-center pl-8 sm:pl-14">
-
-          <h2 className="max-w-xs text-3xl font-bold leading-tight tracking-tight">
+        <div className="flex min-w-0 flex-1 items-center px-4 py-8 sm:px-7 lg:pl-10 xl:pl-14">
+          <h2 className="max-w-[220px] text-xl font-bold leading-tight tracking-tight sm:max-w-xs sm:text-2xl lg:text-3xl">
             Your shortcut to finding a great deal
           </h2>
-
         </div>
 
-
-        <div className="relative hidden w-[480px] md:block">
-
+        <div className="relative hidden w-[360px] shrink-0 md:block lg:w-[480px]">
           <div className="absolute left-1/2 top-6 h-full w-[280px] -translate-x-1/2 rounded-t-[36px] border-[10px] border-neutral-200 bg-white">
-
             <p className="mt-6 text-center text-xl font-extrabold text-red-200">
               trivago
             </p>
@@ -916,9 +823,7 @@ function PromoBanner() {
             >
               Start searching
             </button>
-
           </div>
-
 
           <span className="absolute right-6 top-10 rotate-12 rounded-md bg-red-100 px-2 py-1 text-red-300">
             %
@@ -931,56 +836,38 @@ function PromoBanner() {
           <span className="absolute bottom-24 left-2 rotate-[-10deg] rounded-md bg-blue-100 px-2 py-1 text-blue-300">
             %
           </span>
-
         </div>
 
-
-        <div className="w-24 bg-tv-blue sm:w-[130px]" />
-
+        <div className="w-5 shrink-0 bg-tv-blue sm:w-16 lg:w-[130px]" />
 
         <button
           type="button"
           aria-label="Replay animation"
-          className="absolute bottom-6 right-24 flex h-11 w-11 items-center justify-center rounded-full bg-neutral-700 text-white hover:bg-neutral-800 sm:right-[110px]"
+          className="absolute bottom-3 right-8 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-700 text-white hover:bg-neutral-800 sm:bottom-5 sm:right-20 sm:h-11 sm:w-11 lg:bottom-6 lg:right-[110px]"
         >
           <ReplayIcon />
         </button>
-
       </div>
-
     </section>
   );
 }
 
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
-
       <Header />
 
       <main>
-
         <SearchCard />
-
         <PromoBanner />
-
         <HotDeals />
-
         <DealsBanner />
-
         <BestTimeToBook />
-
         <PopularSearches />
-
         <DownloadApp />
-
         <PopularLinks />
-
         <Footer />
-
       </main>
-
     </div>
   );
 }

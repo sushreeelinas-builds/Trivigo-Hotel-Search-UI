@@ -5,7 +5,7 @@ export default function DownloadApp() {
   return (
     <section className="w-full bg-white px-4 sm:px-8 lg:px-16 py-5">
 
-      <div className="relative max-w-[1255px] mx-auto bg-[#df2450] rounded-2xl overflow-hidden h-[350px] min-h-[300px]">
+      <div className="relative max-w-[1280px] mx-auto bg-[#df2450] rounded-2xl overflow-hidden h-[350px] min-h-[300px]">
 
         <div className="max-w-[11130px] mx-auto grid grid-cols-1 md:grid-cols-2 items-center min-h-[430px] px-6 sm:px-10 lg:px-16">
 

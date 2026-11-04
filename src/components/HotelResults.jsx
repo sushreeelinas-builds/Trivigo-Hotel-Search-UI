@@ -486,7 +486,7 @@ function HotelCard({ hotel, isFavorite, onFavorite, onShare, onOpen, onGallery }
         </p>
         <div className="flex items-end justify-between gap-3">
           <p>
-            <span className="text-sm">From </span>
+           
             <span className="text-2xl font-extrabold">{rupees(hotel.shown)}</span>
           </p>
           <button

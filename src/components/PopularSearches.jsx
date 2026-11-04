@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { slugify } from "../data/cities";
+import SignInModal from "./SignInModal";
 
 const cities = [
   {
@@ -88,8 +89,10 @@ const destinations = [
 
 export default function PopularSearches() {
   const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState("Cities");
   const [startIndex, setStartIndex] = useState(0);
+  const [showSignIn, setShowSignIn] = useState(false);
 
   const data = activeTab === "Cities" ? cities : destinations;
 
@@ -107,14 +110,18 @@ export default function PopularSearches() {
   );
 
   return (
-    <section className="w-full bg-white py-10 px-4  sm:px-8 lg:px-16">
-      <div className="max-w-[1500px] mx-auto w-[1260px]">
+    <section className="w-full overflow-hidden bg-white px-4 py-10 sm:px-6 sm:py-12 lg:px-10 xl:px-16">
 
-        <h2 className="text-2xl sm:text-[28px] font-bold text-black mb-3">
+      <div className="mx-auto w-full max-w-[1280px]">
+
+        {/* Heading */}
+        <h2 className="mb-4 text-2xl font-bold text-black sm:text-[28px]">
           Popular searches
         </h2>
 
-        <div className="flex items-center gap- border-b border-gray-200 mb-4">
+        {/* Tabs */}
+        <div className="mb-6 flex items-center gap-6 border-b border-gray-200">
+
           {["Cities", "Destinations"].map((tab) => (
             <button
               key={tab}
@@ -122,73 +129,88 @@ export default function PopularSearches() {
                 setActiveTab(tab);
                 setStartIndex(0);
               }}
-              className={`px-3 py-2 text-base font-semibold transition-all
-                ${
-                  activeTab === tab
-                    ? "text-black border-b-2 border-black"
-                    : "text-gray-500 hover:text-black"
-                }`}
+              className={`relative px-2 py-3 text-sm font-semibold transition-all sm:text-base ${
+                activeTab === tab
+                  ? "border-b-2 border-black text-black"
+                  : "text-gray-500 hover:text-black"
+              }`}
             >
               {tab}
             </button>
           ))}
+
         </div>
 
+        {/* Cards Section */}
         <div className="relative">
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 h-70 gap-5">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
 
             {visibleCards.map((city, index) => (
+
               <div
                 key={`${city.name}-${index}`}
                 role="link"
                 tabIndex={0}
                 aria-label={`Explore ${city.name}`}
-                onClick={() => navigate(`/destination/${slugify(city.name)}`)}
+                onClick={() =>
+                  navigate(`/destination/${slugify(city.name)}`)
+                }
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     navigate(`/destination/${slugify(city.name)}`);
                   }
                 }}
-                className="group bg-white rounded-2xl overflow-hidden shadow-[0_6px_20px_rgba(0,0,0,0.13)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                className="group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-[0_6px_20px_rgba(0,0,0,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
-                <div className="h-[180px] overflow-hidden">
+
+                {/* Image */}
+                <div className="h-48 overflow-hidden sm:h-44 lg:h-40 xl:h-[180px]">
+
                   <img
                     src={city.image}
                     alt={city.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
+
                 </div>
 
-                <div className="px-2 py-1">
-                  <h3 className="text-[20px] font-bold text-gray-950 mb-">
+                {/* Details */}
+                <div className="px-3 py-3">
+
+                  <h3 className="mb-2 text-lg font-bold text-gray-950 sm:text-xl">
                     {city.name}
                   </h3>
 
-                  <p className="text-[13px] text-gray-700 mb-">
-                    <span className="font-bold text-black text-lg">
+                  <p className="mb-1 text-sm text-gray-700">
+                    <span className="text-lg font-bold text-black">
                       {city.hotels}
                     </span>{" "}
                     Hotels
                   </p>
 
-                  <p className="text-[15px] text-gray-700">
-                    <span className="font-bold text-black text-lg">
+                  <p className="text-sm text-gray-700">
+                    <span className="text-lg font-bold text-black">
                       {city.price}
                     </span>{" "}
                     Avg.
                   </p>
+
                 </div>
+
               </div>
+
             ))}
 
           </div>
 
+          {/* Previous Arrow */}
           <button
             onClick={previousSlide}
             aria-label="Previous cities"
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 bg-white shadow-lg rounded-lg w-10 h-10 hidden xl:flex items-center justify-center hover:bg-gray-100 transition"
+            className="absolute left-0 top-1/2 z-10 hidden h-10 w-10 -translate-x-4 -translate-y-1/2 items-center justify-center rounded-xl bg-white shadow-lg transition hover:bg-gray-100 lg:flex"
           >
             <svg
               width="22"
@@ -202,10 +224,11 @@ export default function PopularSearches() {
             </svg>
           </button>
 
+          {/* Next Arrow */}
           <button
             onClick={nextSlide}
             aria-label="Next cities"
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 bg-white shadow-lg rounded-lg w-10 h-10 hidden xl:flex items-center justify-center hover:bg-gray-100 transition"
+            className="absolute right-0 top-1/2 z-10 hidden h-10 w-10 translate-x-4 -translate-y-1/2 items-center justify-center rounded-xl bg-white shadow-lg transition hover:bg-gray-100 lg:flex"
           >
             <svg
               width="22"
@@ -219,41 +242,73 @@ export default function PopularSearches() {
             </svg>
           </button>
 
-        </div>
+          {/* Mobile Navigation */}
+          <div className="mt-5 flex justify-center gap-4 lg:hidden">
 
-        <div className="mt-12 bg-[#ffca28] rounded-2xl px-2 sm:px-6 py-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <button
+              onClick={previousSlide}
+              aria-label="Previous cities"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-white shadow-sm transition hover:bg-gray-100"
+            >
+              ←
+            </button>
 
-          <div className="flex items-center gap-4">
+            <button
+              onClick={nextSlide}
+              aria-label="Next cities"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-white shadow-sm transition hover:bg-gray-100"
+            >
+              →
+            </button>
 
-            <div className="w-10 h-10 min-w-10 rounded-full border-2 border-black bg-white flex items-center justify-center shadow-sm">
-              <span className="text-2xl font-bold">$</span>
-            </div>
-
-            <p className="text-center sm:text-left text-base sm:text-lg text-black">
-              <span className="font-bold">
-                Want access to member prices and perks?
-              </span>{" "}
-              Continue as a member
-            </p>
           </div>
 
-          <button className="bg-white border border-black rounded-xl px-6 py-3 font-bold text-black flex items-center gap-3 hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap">
-            Sign in
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <path d="m9 18 6-6-6-6" />
-            </svg>
-          </button>
+        </div>
+
+        {/* Member Banner */}
+        <div className="mt-10 flex flex-col items-center justify-between gap-5 rounded-2xl bg-[#ffca28] px-4 py-2 sm:mt-12 sm:flex-row sm:px-6 sm:py-2">
+
+          <div className="flex w-full items-center gap-3 sm:gap-4">
+
+            {/* Icon */}
+            <div className="flex h-11 w-11 min-w-11 items-center justify-center rounded-full border-2 border-black bg-white shadow-sm sm:h-12 sm:w-12">
+
+              <span className="text-2xl font-bold">
+                $
+              </span>
+
+            </div>
+
+            {/* Text */}
+            <p className="text-left text-sm text-black sm:text-base lg:text-lg">
+
+              <span className="font-bold">
+                Want access to member prices and perks?
+              </span>
+
+              <br className="hidden sm:block" />
+
+              <span className="sm:ml-1">
+                Continue as a member
+              </span>
+
+            </p>
+
+          </div>
+
+          {/* Sign In Button */}
+         
+          <SignInModal 
+          isOpen={showSignIn}
+          onClose={() => setShowSignIn(false)}
+        />
 
         </div>
 
+         
+
       </div>
+
     </section>
   );
 }
