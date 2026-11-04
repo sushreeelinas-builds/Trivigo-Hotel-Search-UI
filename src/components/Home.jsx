@@ -10,7 +10,6 @@ import DownloadApp from "./DownloadApp";
 import PopularLinks from "./PopularLinks";
 import Footer from "./Footer";
 
-import LanguageCurrencyModal from "./LanguageCurrencyModal";
 import SignInModal from "./SignInModal";
 import MenuModal from "./MenuModal";
 
@@ -137,7 +136,7 @@ function Header() {
         <Logo />
 
         <nav className="flex min-w-0 flex-1 flex-wrap items-center justify-end gap-1.5 sm:gap-2 md:gap-3 lg:flex-none">
-          <LanguageCurrencyModal />
+          
           <SignInModal />
           <MenuModal />
         </nav>
@@ -840,13 +839,7 @@ function PromoBanner() {
 
         <div className="w-5 shrink-0 bg-tv-blue sm:w-16 lg:w-[130px]" />
 
-        <button
-          type="button"
-          aria-label="Replay animation"
-          className="absolute bottom-3 right-8 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-700 text-white hover:bg-neutral-800 sm:bottom-5 sm:right-20 sm:h-11 sm:w-11 lg:bottom-6 lg:right-[110px]"
-        >
-          <ReplayIcon />
-        </button>
+        
       </div>
     </section>
   );

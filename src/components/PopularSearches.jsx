@@ -266,45 +266,7 @@ export default function PopularSearches() {
         </div>
 
         {/* Member Banner */}
-        <div className="mt-10 flex flex-col items-center justify-between gap-5 rounded-2xl bg-[#ffca28] px-4 py-2 sm:mt-12 sm:flex-row sm:px-6 sm:py-2">
-
-          <div className="flex w-full items-center gap-3 sm:gap-4">
-
-            {/* Icon */}
-            <div className="flex h-11 w-11 min-w-11 items-center justify-center rounded-full border-2 border-black bg-white shadow-sm sm:h-12 sm:w-12">
-
-              <span className="text-2xl font-bold">
-                $
-              </span>
-
-            </div>
-
-            {/* Text */}
-            <p className="text-left text-sm text-black sm:text-base lg:text-lg">
-
-              <span className="font-bold">
-                Want access to member prices and perks?
-              </span>
-
-              <br className="hidden sm:block" />
-
-              <span className="sm:ml-1">
-                Continue as a member
-              </span>
-
-            </p>
-
-          </div>
-
-          {/* Sign In Button */}
-         
-          <SignInModal 
-          isOpen={showSignIn}
-          onClose={() => setShowSignIn(false)}
-        />
-
-        </div>
-
+       
          
 
       </div>

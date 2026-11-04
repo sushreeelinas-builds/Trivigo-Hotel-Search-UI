@@ -19,49 +19,19 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-        {/* Public Routes */}
         <Route path="/" element={<Home />} />
-
         <Route path="/hotels" element={<HotelResults />} />
-
         <Route path="/hoteliers" element={<HotelResults />} />
-
-        <Route
-          path="/hotel/:id"
-          element={<HotelDetails />}
-        />
-
-        <Route
-          path="/destination/:slug"
-          element={<CityDetails />}
-        />
-
-        <Route
-          path="/recent-viewed"
-          element={<RecentlyViewed />}
-        />
-
-        {/* Protected Routes */}
+        <Route path="/hotel/:id"  element={<HotelDetails />}/>
+        <Route path="/destination/:slug" element={<CityDetails />}/>
+        <Route path="/recent-viewed" element={<RecentlyViewed />}/>
+        
         <Route element={<ProtectRoute />}>
-
-          <Route
-            path="/my-bookings"
-            element={<MyBookings />}
-          />
-
-          <Route
-            path="/favorites"
-            element={<Favorites />}
-          />
-
+         <Route path="/my-bookings" element={<MyBookings />}/>
+         <Route path="/favorites" element={<Favorites />}/>
         </Route>
 
-        {/* Unknown Routes */}
-        <Route
-          path="*"
-          element={<Navigate to="/" replace />}
-        />
+        <Route path="*" element={<Navigate to="/" replace />}/>
 
       </Routes>
     </BrowserRouter>

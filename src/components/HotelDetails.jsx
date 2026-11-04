@@ -2,7 +2,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import LanguageCurrencyModal from "./LanguageCurrencyModal";
 import SignInModal from "./SignInModal";
 import MenuModal from "./MenuModal";
 
@@ -275,7 +274,6 @@ export default function HotelDetails() {
           </button>
 
           <div className="flex items-center gap-2">
-            <LanguageCurrencyModal />
 
             {/* Only ONE SignInModal instance */}
             <SignInModal

@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, X, MapPin, Hotel, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
-import LanguageCurrencyModal from "./LanguageCurrencyModal";
 import SignInModal from "./SignInModal";
 import MenuModal from "./MenuModal";
 import { cities, findCity, TODAY } from "../data/cities";
@@ -388,7 +387,6 @@ export default function SiteHeader({ initial, onSearch, children }) {
         </form>
 
         <div className="flex items-center gap-2">
-          <LanguageCurrencyModal />
           <SignInModal />
           <MenuModal />
         </div>
