@@ -39,11 +39,9 @@ export default function HotelDetails() {
     }
   }, []);
 
-  // Modal states
   const [showBooking, setShowBooking] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
 
-  // Booking details
   const [checkIn, setCheckIn] = useState(
     state?.checkIn || saved.checkIn || "2026-11-22"
   );
@@ -61,7 +59,6 @@ export default function HotelDetails() {
     state?.rooms || saved.rooms || 1
   );
 
-  // Favorites
   const [favorites, setFavorites] = useState(() => {
     try {
       return JSON.parse(
@@ -79,7 +76,6 @@ export default function HotelDetails() {
     );
   }, [favorites]);
 
-  // Recently viewed hotels
   useEffect(() => {
     if (!hotel) return;
 
@@ -98,7 +94,6 @@ export default function HotelDetails() {
         JSON.stringify(next)
       );
     } catch {
-      // Ignore storage errors
     }
   }, [hotel]);
 
@@ -127,7 +122,6 @@ export default function HotelDetails() {
     );
   }
 
-  // Price calculation
   const pricePerNight = formatPrice(hotel.price);
 
   const validDates =
@@ -146,7 +140,6 @@ export default function HotelDetails() {
 
   const total = pricePerNight * nights * rooms;
 
-  // Favorite functionality
   const isFavorite = favorites.some(
     (f) => f.id === hotel.id
   );
@@ -159,13 +152,11 @@ export default function HotelDetails() {
     );
   };
 
-  // Hotel gallery
   const gallery = [
     hotel.image,
     ...galleryImages.filter((img) => img !== hotel.image),
   ].slice(0, 4);
 
-  // Check login before booking
   const handleBookNow = () => {
     let loginUser = null;
 
@@ -184,18 +175,15 @@ export default function HotelDetails() {
     }
   };
 
-  // Called after successful login
   const handleLoginSuccess = () => {
     setShowSignIn(false);
     setShowBooking(true);
   };
 
-  // Close sign-in modal
   const handleSignInClose = () => {
     setShowSignIn(false);
   };
 
-  // Confirm booking
   const confirmBooking = () => {
     let loginUser = null;
 
@@ -207,7 +195,6 @@ export default function HotelDetails() {
       loginUser = null;
     }
 
-    // Check login again
     if (loginUser?.signedIn !== true) {
       setShowBooking(false);
       setShowSignIn(true);
@@ -262,7 +249,6 @@ export default function HotelDetails() {
 
   return (
     <div className="min-h-screen bg-[#f7f7f7] text-gray-900">
-      {/* HEADER */}
       <header className="sticky top-0 z-30 border-b border-gray-200 bg-white">
         <div className="flex flex-wrap items-center justify-between gap-4 px-4 py-4 lg:px-8">
           <button
@@ -275,7 +261,6 @@ export default function HotelDetails() {
 
           <div className="flex items-center gap-2">
 
-            {/* Only ONE SignInModal instance */}
             <SignInModal
               isOpen={showSignIn}
               onClose={handleSignInClose}
@@ -287,7 +272,6 @@ export default function HotelDetails() {
         </div>
       </header>
 
-      {/* HOTEL CONTENT */}
       <main className="mx-auto max-w-6xl px-4 py-6">
         <button
           onClick={() => navigate(-1)}
@@ -296,7 +280,6 @@ export default function HotelDetails() {
           ← Back to results
         </button>
 
-        {/* HOTEL INFORMATION */}
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2">
@@ -336,7 +319,6 @@ export default function HotelDetails() {
           </button>
         </div>
 
-        {/* HOTEL GALLERY */}
         <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
           {gallery.map((image, index) => (
             <img
@@ -353,7 +335,6 @@ export default function HotelDetails() {
         </div>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px]">
-          {/* LEFT CONTENT */}
           <div>
             <p className="text-gray-700">
               {hotel.description}
@@ -407,7 +388,6 @@ export default function HotelDetails() {
             </div>
           </div>
 
-          {/* BOOKING CARD */}
           <aside className="h-fit rounded-2xl border border-gray-200 bg-white p-5 shadow-sm lg:sticky lg:top-24">
             <p className="text-sm text-gray-500">
               Price per night · {hotel.provider || "Hotel Site"}
@@ -433,7 +413,6 @@ export default function HotelDetails() {
         </div>
       </main>
 
-      {/* BOOKING MODAL */}
       {showBooking && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4">
           <div className="my-5 w-full max-w-lg rounded-2xl bg-white p-6">
@@ -451,7 +430,6 @@ export default function HotelDetails() {
               </button>
             </div>
 
-            {/* HOTEL SUMMARY */}
             <div className="mt-5 flex gap-4">
               <img
                 src={hotel.image}
@@ -474,7 +452,6 @@ export default function HotelDetails() {
               </div>
             </div>
 
-            {/* BOOKING INPUTS */}
             <div className="mt-6 grid grid-cols-2 gap-4">
               <label className="text-sm font-semibold">
                 Check-in
@@ -541,7 +518,6 @@ export default function HotelDetails() {
               </p>
             )}
 
-            {/* PRICE SUMMARY */}
             <div className="mt-6 rounded-xl bg-gray-50 p-4">
               <div className="flex justify-between text-sm text-gray-600">
                 <span>Price per night</span>
@@ -566,7 +542,6 @@ export default function HotelDetails() {
               </div>
             </div>
 
-            {/* CONFIRM BOOKING */}
             <button
               onClick={confirmBooking}
               disabled={!validDates}

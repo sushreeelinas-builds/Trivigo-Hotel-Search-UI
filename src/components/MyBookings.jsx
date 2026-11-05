@@ -19,7 +19,6 @@ export default function MyBookings() {
     }
   }, []);
 
-  // Cancel booking
   const cancelBooking = (id) => {
     const updated = bookings.map((booking) =>
       booking.id === id
@@ -38,7 +37,6 @@ export default function MyBookings() {
   return (
     <div className="min-h-screen bg-gray-50">
 
-      {/* Header */}
       <header className="flex items-center justify-between border-b bg-white px-6 py-5">
 
         <button
@@ -58,7 +56,6 @@ export default function MyBookings() {
 
       </header>
 
-      {/* Main Content */}
       <main className="mx-auto max-w-5xl px-5 py-10">
 
         <h1 className="text-3xl font-extrabold text-gray-900">
@@ -69,7 +66,6 @@ export default function MyBookings() {
           Manage your hotel bookings.
         </p>
 
-        {/* Empty State */}
         {bookings.length === 0 ? (
 
           <div className="mt-10 rounded-2xl bg-white p-12 text-center shadow-sm">
@@ -97,7 +93,6 @@ export default function MyBookings() {
 
         ) : (
 
-          /* Booking Cards */
           <div className="mt-8 space-y-5">
 
             {bookings.map((booking) => (
@@ -107,14 +102,12 @@ export default function MyBookings() {
                 className="overflow-hidden rounded-2xl border bg-white p-4 shadow-sm sm:flex sm:gap-5"
               >
 
-                {/* Hotel Image */}
                 <img
                   src={booking.image}
                   alt={booking.hotelName}
                   className="h-48 w-full rounded-xl object-cover sm:h-40 sm:w-52"
                 />
 
-                {/* Booking Details */}
                 <div className="flex-1 py-3">
 
                   <div className="flex flex-wrap items-center justify-between gap-2">
@@ -139,7 +132,6 @@ export default function MyBookings() {
                     📍 {booking.location}
                   </p>
 
-                  {/* Dates and Guests */}
                   <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
 
                     <p>
@@ -176,7 +168,6 @@ export default function MyBookings() {
 
                   </div>
 
-                  {/* Price and Cancel Button */}
                   <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t pt-4">
 
                     <div>

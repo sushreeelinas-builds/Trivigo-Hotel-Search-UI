@@ -26,7 +26,6 @@ export default function MenuModal() {
 
   return (
     <div className="relative">
-      {/* Menu Button */}
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -44,10 +43,8 @@ export default function MenuModal() {
         <span>Menu</span>
       </button>
 
-      {/* Dropdown */}
       {open && (
         <>
-          {/* Outside Click */}
           <div
             className="fixed inset-0 z-40"
             onClick={() => setOpen(false)}

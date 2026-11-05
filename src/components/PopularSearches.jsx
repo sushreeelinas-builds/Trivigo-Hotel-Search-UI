@@ -114,12 +114,10 @@ export default function PopularSearches() {
 
       <div className="mx-auto w-full max-w-[1280px]">
 
-        {/* Heading */}
         <h2 className="mb-4 text-2xl font-bold text-black sm:text-[28px]">
           Popular searches
         </h2>
 
-        {/* Tabs */}
         <div className="mb-6 flex items-center gap-6 border-b border-gray-200">
 
           {["Cities", "Destinations"].map((tab) => (
@@ -141,7 +139,6 @@ export default function PopularSearches() {
 
         </div>
 
-        {/* Cards Section */}
         <div className="relative">
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
@@ -165,7 +162,6 @@ export default function PopularSearches() {
                 className="group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-[0_6px_20px_rgba(0,0,0,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
 
-                {/* Image */}
                 <div className="h-48 overflow-hidden sm:h-44 lg:h-40 xl:h-[180px]">
 
                   <img
@@ -176,8 +172,6 @@ export default function PopularSearches() {
                   />
 
                 </div>
-
-                {/* Details */}
                 <div className="px-3 py-3">
 
                   <h3 className="mb-2 text-lg font-bold text-gray-950 sm:text-xl">
@@ -206,7 +200,6 @@ export default function PopularSearches() {
 
           </div>
 
-          {/* Previous Arrow */}
           <button
             onClick={previousSlide}
             aria-label="Previous cities"
@@ -224,7 +217,6 @@ export default function PopularSearches() {
             </svg>
           </button>
 
-          {/* Next Arrow */}
           <button
             onClick={nextSlide}
             aria-label="Next cities"
@@ -242,7 +234,6 @@ export default function PopularSearches() {
             </svg>
           </button>
 
-          {/* Mobile Navigation */}
           <div className="mt-5 flex justify-center gap-4 lg:hidden">
 
             <button
@@ -265,9 +256,6 @@ export default function PopularSearches() {
 
         </div>
 
-        {/* Member Banner */}
-       
-         
 
       </div>
 

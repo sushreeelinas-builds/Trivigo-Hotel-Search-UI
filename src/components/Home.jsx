@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { searchUrl } from "../data/cities";
@@ -50,14 +51,14 @@ const MenuIcon = () => (
 );
 
 const SearchIcon = () => (
-  <Icon className="h-7 w-7">
+  <Icon className="h-7 w-7 shrink-0">
     <circle cx="11" cy="11" r="7" />
     <path d="m20 20-4-4" />
   </Icon>
 );
 
 const CalendarIcon = () => (
-  <Icon className="h-6 w-6">
+  <Icon className="h-6 w-6 shrink-0">
     <rect x="3" y="5" width="18" height="15" rx="2" />
     <path d="M3 10h18M8 3v4M16 3v4" />
     <circle cx="7.5" cy="14.5" r=".6" fill="currentColor" />
@@ -65,7 +66,7 @@ const CalendarIcon = () => (
 );
 
 const GuestsIcon = () => (
-  <Icon className="h-6 w-6">
+  <Icon className="h-6 w-6 shrink-0">
     <circle cx="9" cy="9" r="3" />
     <path d="M3 19c.6-3 2.6-4.5 6-4.5s5.4 1.5 6 4.5" />
     <path d="M16 6.2a3 3 0 0 1 0 5.6M18 14.8c1.7.6 2.7 2 3 4.2" />
@@ -78,20 +79,13 @@ const CloseIcon = () => (
   </Icon>
 );
 
-const ReplayIcon = () => (
-  <Icon>
-    <path d="M4 12a8 8 0 1 0 3-6.2" />
-    <path d="M4 4v4.5h4.5" />
-  </Icon>
-);
-
 const Logo = () => (
   <a
     href="/"
     aria-label="trivago home"
     className="select-none whitespace-nowrap text-[27px] font-extrabold leading-none tracking-tight sm:text-[32px] lg:text-[36px]"
   >
-    <span className="bg-gradient-to-r  from-tv-red to-tv-orange bg-clip-text text-transparent">
+    <span className="bg-gradient-to-r from-tv-red to-tv-orange bg-clip-text text-transparent">
       tri
     </span>
     <span className="text-tv-blue">vago</span>
@@ -132,11 +126,10 @@ const partners = [
 function Header() {
   return (
     <header className="relative z-50 border-b border-neutral-200 bg-white">
-      <div className="mx-auto flex min-h-[65px] max-w-[1410px] flex-wrap items-center justify-between gap-3 px-3 py-3 sm:px-6 lg:flex-nowrap lg:px-8">
+      <div className="mx-auto flex min-h-[72px] max-w-[1410px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Logo />
 
-        <nav className="flex min-w-0 flex-1 flex-wrap items-center justify-end gap-1.5 sm:gap-2 md:gap-3 lg:flex-none">
-          
+        <nav className="flex shrink-0 items-center justify-end gap-2 sm:gap-3">
           <SignInModal />
           <MenuModal />
         </nav>
@@ -357,434 +350,437 @@ function SearchCard() {
   };
 
   const field =
-    "flex items-center gap-3 px-5 py-3 text-left transition-colors hover:bg-neutral-50";
+    "flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 sm:px-5";
 
   return (
-    <section className="bg-gradient-to-b from-neutral-100 to-neutral-50/30 pb-8 pt-7 sm:pb-12 sm:pt-10 lg:pb-14 lg:pt-[50px]">
-      <div className="mx-auto max-w-[1600px] px-3 sm:px-6 lg:px-8">
+    <section className="bg-gradient-to-b from-neutral-100 to-neutral-50/30 pb-10 pt-8 sm:pb-12 sm:pt-10 lg:pb-14 lg:pt-[50px]">
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
         <div className="relative z-20 mx-auto w-full max-w-[1260px] rounded-xl bg-white px-4 pb-6 pt-6 shadow-[0_6px_24px_rgba(0,0,0,0.08)] sm:rounded-2xl sm:px-7 sm:pb-8 sm:pt-8 lg:px-10 lg:pb-9 lg:pt-9">
-          <h1 className="max-w-3xl text-[23px] font-bold leading-tight tracking-tight sm:text-[29px] lg:text-[34px]">
-            Save up to 55% on your next hotel stay
-          </h1>
 
-          <p className="mt-2 text-sm text-neutral-700 sm:text-lg lg:text-xl">
-            We compare hotel prices from over 100 sites
-          </p>
+          <div className="mx-auto w-full max-w-[1160px]">
+            <h1 className="max-w-3xl text-[23px] font-bold leading-tight tracking-tight sm:text-[29px] lg:text-[34px]">
+              Save up to 55% on your next hotel stay
+            </h1>
 
-          <form
-            onSubmit={handleSearch}
-            className="relative mt-6 grid grid-cols-1 overflow-visible rounded-xl border border-neutral-300 bg-white sm:mt-8 sm:rounded-2xl lg:grid-cols-[minmax(250px,1fr)_230px_250px_150px] xl:grid-cols-[minmax(250px,1fr)_260px_280px_auto]"
-          >
-            <div className="relative min-w-0">
-              <label
-                className={`flex min-h-[68px] cursor-text items-center gap-3 rounded-l-2xl px-4 py-3 sm:min-h-[74px] sm:gap-4 sm:px-5 ${
-                  showDestinations
-                    ? "ring-2 ring-inset ring-tv-blue"
-                    : ""
-                }`}
-              >
-                <SearchIcon />
+            <p className="mt-2 text-sm text-neutral-700 sm:text-lg lg:text-xl">
+              We compare hotel prices from over 100 sites
+            </p>
 
-                <span className="flex min-w-0 flex-1 flex-col">
-                  <span className="text-sm text-neutral-500">
-                    Destination
-                  </span>
+            <form
+              onSubmit={handleSearch}
+              className="relative mt-6 grid grid-cols-1 overflow-visible rounded-xl border border-neutral-300 bg-white sm:mt-8 sm:rounded-2xl lg:grid-cols-[minmax(0,1fr)_230px_250px_150px] xl:grid-cols-[minmax(0,1fr)_260px_280px_150px]"
+            >
+              <div className="relative min-w-0">
+                <label
+                  className={`flex min-h-[74px] cursor-text items-center gap-3 rounded-t-xl px-4 py-3 sm:gap-4 sm:px-5 lg:rounded-l-2xl lg:rounded-tr-none ${
+                    showDestinations
+                      ? "ring-2 ring-inset ring-tv-blue"
+                      : ""
+                  }`}
+                >
+                  <SearchIcon />
 
-                  <input
-                    value={destination}
-                    onChange={(e) => {
-                      setDestination(e.target.value);
-                      setShowDestinations(true);
-                    }}
-                    onFocus={() => {
-                      setShowDestinations(true);
-                      setShowCalendar(false);
-                      setShowGuests(false);
-                    }}
-                    placeholder="Where to?"
-                    className="w-full bg-transparent text-base font-semibold outline-none placeholder:font-normal"
-                  />
-                </span>
-
-                {destination && (
-                  <button
-                    type="button"
-                    onClick={() => setDestination("")}
-                    aria-label="Clear destination"
-                    className="rounded-full p-1 hover:bg-neutral-200"
-                  >
-                    <CloseIcon />
-                  </button>
-                )}
-              </label>
-
-              {showDestinations && (
-                <div className="absolute left-0 top-[calc(100%-2px)] z-50 max-h-[min(390px,65vh)] w-full min-w-0 overflow-y-auto rounded-xl bg-white shadow-[0_12px_30px_rgba(0,0,0,0.28)] sm:rounded-2xl">
-                  <div className="bg-neutral-100 px-6 py-4 text-sm font-bold">
-                    {destination
-                      ? "Suggested destinations"
-                      : "Places you recently searched"}
-                  </div>
-
-                  {filteredDestinations.length > 0 ? (
-                    filteredDestinations.map((item) => (
-                      <button
-                        type="button"
-                        key={item.name}
-                        onClick={() => {
-                          setDestination(item.name);
-                          setShowDestinations(false);
-                        }}
-                        className="flex w-full items-center gap-4 px-4 py-3 text-left hover:bg-neutral-100 sm:gap-5 sm:px-6"
-                      >
-                        <span className="text-xl text-tv-blue">
-                          {item.type === "Hotel" ? "▦" : "♧"}
-                        </span>
-
-                        <span>
-                          <span className="block font-medium">
-                            {item.name}
-                          </span>
-
-                          <span className="block text-sm text-neutral-500">
-                            {item.type} · {item.location}
-                          </span>
-                        </span>
-                      </button>
-                    ))
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => setShowDestinations(false)}
-                      className="w-full px-6 py-5 text-left hover:bg-neutral-100"
-                    >
-                      Search for "{destination}"
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div className="relative min-w-0 border-t border-neutral-300 lg:border-l lg:border-t-0">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowCalendar(!showCalendar);
-                  setShowDestinations(false);
-                  setShowGuests(false);
-                }}
-                className={`${field} min-h-[74px] w-full ${
-                  showCalendar
-                    ? "ring-2 ring-inset ring-tv-blue"
-                    : ""
-                }`}
-              >
-                <CalendarIcon />
-
-                <span className="flex flex-col">
-                  <span className="text-sm text-neutral-500">
-                    Check-in/out
-                  </span>
-
-                  <span className="font-bold">
-                    {formatDate(checkIn)} - {formatDate(checkOut)}
-                  </span>
-                </span>
-              </button>
-
-              {showCalendar && (
-                <div className="absolute left-0 top-[calc(100%-2px)] z-50 w-[min(800px,calc(100vw-24px))] max-h-[75vh] overflow-y-auto rounded-xl bg-white p-3 shadow-[0_15px_35px_rgba(0,0,0,0.3)] sm:left-1/2 sm:w-[min(800px,calc(100vw-40px))] sm:-translate-x-1/2 sm:rounded-2xl sm:p-5 lg:p-7">
-                  <div className="mb-5 flex items-center justify-between">
-                    <button
-                      type="button"
-                      onClick={() => changeMonth(-1)}
-                      className="rounded-full p-2 text-2xl hover:bg-neutral-100"
-                    >
-                      ‹
-                    </button>
-
-                    <div className="grid flex-1 grid-cols-1 text-center text-sm font-bold sm:grid-cols-2 sm:text-base">
-                      <span>
-                        {calendarMonth.toLocaleDateString("en-US", {
-                          month: "long",
-                          year: "numeric",
-                        })}
-                      </span>
-
-                      <span className="hidden sm:inline">
-                        {new Date(
-                          calendarMonth.getFullYear(),
-                          calendarMonth.getMonth() + 1,
-                          1
-                        ).toLocaleDateString("en-US", {
-                          month: "long",
-                          year: "numeric",
-                        })}
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => changeMonth(1)}
-                      className="rounded-full p-2 text-2xl hover:bg-neutral-100"
-                    >
-                      ›
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
-                    {[0, 1].map((offset) => {
-                      const month = new Date(
-                        calendarMonth.getFullYear(),
-                        calendarMonth.getMonth() + offset,
-                        1
-                      );
-
-                      const days = getCalendarDays(month);
-
-                      return (
-                        <div
-                          key={offset}
-                          className={`min-w-0 ${
-                            offset === 1 ? "hidden sm:block" : ""
-                          }`}
-                        >
-                          <div className="mb-3 grid grid-cols-7 rounded-xl bg-neutral-100 py-3 text-center text-xs font-semibold sm:text-sm">
-                            {weekdays.map((day) => (
-                              <span key={day}>{day}</span>
-                            ))}
-                          </div>
-
-                          <div className="grid grid-cols-7 gap-y-1 text-center">
-                            {days.map((date, index) => {
-                              if (!date) {
-                                return <span key={`empty-${index}`} />;
-                              }
-
-                              const selected =
-                                sameDay(date, checkIn) ||
-                                sameDay(date, checkOut);
-
-                              const between = isBetween(date);
-
-                              return (
-                                <button
-                                  type="button"
-                                  key={date.toISOString()}
-                                  onClick={() => changeDate(date)}
-                                  className={`mx-auto flex h-9 w-9 items-center justify-center rounded-full text-sm transition-all sm:h-10 sm:w-10 ${
-                                    selected
-                                      ? "bg-tv-blue font-bold text-white"
-                                      : between
-                                        ? "bg-blue-100 text-tv-blue"
-                                        : "hover:bg-neutral-200"
-                                  }`}
-                                >
-                                  {date.getDate()}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className="my-5 border-t border-neutral-200" />
-
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      { label: "Tonight", value: "today" },
-                      { label: "Tomorrow night", value: "tomorrow" },
-                      { label: "This weekend", value: "weekend" },
-                      { label: "Next weekend", value: "nextWeekend" },
-                    ].map((item) => (
-                      <button
-                        type="button"
-                        key={item.value}
-                        onClick={() => selectQuickDate(item.value)}
-                        className="rounded-full border border-neutral-300 px-3 py-2 text-xs font-semibold hover:border-tv-blue hover:text-tv-blue sm:px-4 sm:text-sm"
-                      >
-                        <span className="mr-1">▣</span>
-                        {item.label}
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="mt-5 flex items-center justify-between">
+                  <span className="flex min-w-0 flex-1 flex-col">
                     <span className="text-sm text-neutral-500">
-                      {formatDate(checkIn)} - {formatDate(checkOut)}
+                      Destination
                     </span>
 
-                    <button
-                      type="button"
-                      disabled={!checkIn || !checkOut}
-                      onClick={() => setShowCalendar(false)}
-                      className="rounded-lg bg-tv-blue px-8 py-3 font-bold text-white hover:bg-tv-blue-dark disabled:opacity-50"
-                    >
-                      Apply
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="relative min-w-0 border-t border-neutral-300 lg:border-l lg:border-t-0">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowGuests(!showGuests);
-                  setShowCalendar(false);
-                  setShowDestinations(false);
-                }}
-                className={`${field} min-h-[74px] w-full ${
-                  showGuests
-                    ? "ring-2 ring-inset ring-tv-blue"
-                    : ""
-                }`}
-              >
-                <GuestsIcon />
-
-                <span className="flex flex-col">
-                  <span className="text-sm text-neutral-500">
-                    Guests and rooms
-                  </span>
-
-                  <span className="font-bold">
-                    {guestLabel}
-                  </span>
-                </span>
-              </button>
-
-              {showGuests && (
-                <div className="absolute right-0 top-[calc(100%-2px)] z-50 w-[min(440px,calc(100vw-24px))] max-h-[75vh] overflow-y-auto rounded-xl bg-white p-4 shadow-[0_15px_35px_rgba(0,0,0,0.3)] sm:rounded-2xl sm:p-6 lg:p-8">
-                  {[
-                    {
-                      label: "Adults",
-                      value: adults,
-                      setter: setAdults,
-                      min: 1,
-                    },
-                    {
-                      label: "Children",
-                      value: children,
-                      setter: setChildren,
-                      min: 0,
-                    },
-                    {
-                      label: "Rooms",
-                      value: rooms,
-                      setter: setRooms,
-                      min: 1,
-                    },
-                  ].map((item) => (
-                    <div
-                      key={item.label}
-                      className="mb-6 flex items-center justify-between gap-3"
-                    >
-                      <span className="font-bold">
-                        {item.label}
-                      </span>
-
-                      <div className="flex items-center gap-3">
-                        <button
-                          type="button"
-                          disabled={item.value <= item.min}
-                          onClick={() =>
-                            updateCount(item.setter, -1, item.min)
-                          }
-                          className="flex h-11 w-11 items-center justify-center rounded-full border border-tv-blue text-2xl text-tv-blue hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-30"
-                        >
-                          −
-                        </button>
-
-                        <span className="w-10 text-center text-lg">
-                          {item.value}
-                        </span>
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            updateCount(item.setter, 1, item.min)
-                          }
-                          className="flex h-11 w-11 items-center justify-center rounded-full border border-tv-blue text-2xl text-tv-blue hover:bg-blue-50"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="border-t border-neutral-200 pt-6">
-                    <label className="flex cursor-pointer items-center justify-between gap-3">
-                      <span>
-                        <span className="block font-bold">
-                          Pet-friendly
-                        </span>
-
-                        <span className="text-sm text-neutral-600">
-                          Only show stays that allow pets
-                        </span>
-                      </span>
-
-                      <input
-                        type="checkbox"
-                        checked={petFriendly}
-                        onChange={(e) =>
-                          setPetFriendly(e.target.checked)
-                        }
-                        className="h-5 w-5 accent-tv-blue"
-                      />
-                    </label>
-                  </div>
-
-                  <div className="mt-7 flex items-center justify-between">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setAdults(2);
-                        setChildren(0);
-                        setRooms(1);
-                        setPetFriendly(false);
+                    <input
+                      value={destination}
+                      onChange={(e) => {
+                        setDestination(e.target.value);
+                        setShowDestinations(true);
                       }}
-                      className="font-bold text-neutral-400 hover:text-neutral-700"
-                    >
-                      RESET
-                    </button>
+                      onFocus={() => {
+                        setShowDestinations(true);
+                        setShowCalendar(false);
+                        setShowGuests(false);
+                      }}
+                      placeholder="Where to?"
+                      className="w-full bg-transparent text-base font-semibold outline-none placeholder:font-normal"
+                    />
+                  </span>
 
+                  {destination && (
                     <button
                       type="button"
-                      onClick={() => setShowGuests(false)}
-                      className="rounded-lg bg-tv-blue px-10 py-3 font-bold text-white hover:bg-tv-blue-dark"
+                      onClick={() => setDestination("")}
+                      aria-label="Clear destination"
+                      className="rounded-full p-1 hover:bg-neutral-200"
                     >
-                      Apply
+                      <CloseIcon />
                     </button>
+                  )}
+                </label>
+
+                {showDestinations && (
+                  <div className="absolute left-0 top-[calc(100%-2px)] z-50 max-h-[min(390px,65vh)] w-full overflow-y-auto rounded-xl bg-white shadow-[0_12px_30px_rgba(0,0,0,0.28)] sm:rounded-2xl">
+                    <div className="bg-neutral-100 px-6 py-4 text-sm font-bold">
+                      {destination
+                        ? "Suggested destinations"
+                        : "Places you recently searched"}
+                    </div>
+
+                    {filteredDestinations.length > 0 ? (
+                      filteredDestinations.map((item) => (
+                        <button
+                          type="button"
+                          key={item.name}
+                          onClick={() => {
+                            setDestination(item.name);
+                            setShowDestinations(false);
+                          }}
+                          className="flex w-full items-center gap-4 px-4 py-3 text-left hover:bg-neutral-100 sm:gap-5 sm:px-6"
+                        >
+                          <span className="text-xl text-tv-blue">
+                            {item.type === "Hotel" ? "▦" : "♧"}
+                          </span>
+
+                          <span>
+                            <span className="block font-medium">
+                              {item.name}
+                            </span>
+
+                            <span className="block text-sm text-neutral-500">
+                              {item.type} · {item.location}
+                            </span>
+                          </span>
+                        </button>
+                      ))
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setShowDestinations(false)}
+                        className="w-full px-6 py-5 text-left hover:bg-neutral-100"
+                      >
+                        Search for "{destination}"
+                      </button>
+                    )}
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            <div className="flex items-center border-t border-neutral-300 p-2 lg:border-t-0">
-              <button
-                type="submit"
-                className="h-[50px] w-full rounded-lg bg-tv-blue px-6 text-base font-bold text-white transition-colors hover:bg-tv-blue-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tv-blue sm:h-[54px] sm:text-lg"
-              >
-                Search
-              </button>
-            </div>
-          </form>
+              <div className="relative min-w-0 border-t border-neutral-300 lg:border-l lg:border-t-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowCalendar(!showCalendar);
+                    setShowDestinations(false);
+                    setShowGuests(false);
+                  }}
+                  className={`${field} min-h-[74px] w-full ${
+                    showCalendar
+                      ? "ring-2 ring-inset ring-tv-blue"
+                      : ""
+                  }`}
+                >
+                  <CalendarIcon />
 
-          <ul className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-4 px-1 sm:mt-9 sm:justify-between sm:gap-x-7 sm:px-2">
-            {partners.map((p) => (
-              <li key={p.name} className={p.className}>
-                {p.name}
+                  <span className="flex min-w-0 flex-col">
+                    <span className="text-sm text-neutral-500">
+                      Check-in/out
+                    </span>
+
+                    <span className="whitespace-nowrap font-bold">
+                      {formatDate(checkIn)} - {formatDate(checkOut)}
+                    </span>
+                  </span>
+                </button>
+
+                {showCalendar && (
+                  <div className="absolute left-0 top-[calc(100%-2px)] z-50 max-h-[75vh] w-[min(800px,calc(100vw-32px))] overflow-y-auto rounded-xl bg-white p-3 shadow-[0_15px_35px_rgba(0,0,0,0.3)] sm:left-1/2 sm:w-[min(800px,calc(100vw-48px))] sm:-translate-x-1/2 sm:rounded-2xl sm:p-5 lg:p-7">
+                    <div className="mb-5 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => changeMonth(-1)}
+                        className="rounded-full p-2 text-2xl hover:bg-neutral-100"
+                      >
+                        ‹
+                      </button>
+
+                      <div className="grid flex-1 grid-cols-1 text-center text-sm font-bold sm:grid-cols-2 sm:text-base">
+                        <span>
+                          {calendarMonth.toLocaleDateString("en-US", {
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </span>
+
+                        <span className="hidden sm:inline">
+                          {new Date(
+                            calendarMonth.getFullYear(),
+                            calendarMonth.getMonth() + 1,
+                            1
+                          ).toLocaleDateString("en-US", {
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => changeMonth(1)}
+                        className="rounded-full p-2 text-2xl hover:bg-neutral-100"
+                      >
+                        ›
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
+                      {[0, 1].map((offset) => {
+                        const month = new Date(
+                          calendarMonth.getFullYear(),
+                          calendarMonth.getMonth() + offset,
+                          1
+                        );
+
+                        const days = getCalendarDays(month);
+
+                        return (
+                          <div
+                            key={offset}
+                            className={`min-w-0 ${
+                              offset === 1 ? "hidden sm:block" : ""
+                            }`}
+                          >
+                            <div className="mb-3 grid grid-cols-7 rounded-xl bg-neutral-100 py-3 text-center text-xs font-semibold sm:text-sm">
+                              {weekdays.map((day) => (
+                                <span key={day}>{day}</span>
+                              ))}
+                            </div>
+
+                            <div className="grid grid-cols-7 gap-y-1 text-center">
+                              {days.map((date, index) => {
+                                if (!date) {
+                                  return <span key={`empty-${index}`} />;
+                                }
+
+                                const selected =
+                                  sameDay(date, checkIn) ||
+                                  sameDay(date, checkOut);
+
+                                const between = isBetween(date);
+
+                                return (
+                                  <button
+                                    type="button"
+                                    key={date.toISOString()}
+                                    onClick={() => changeDate(date)}
+                                    className={`mx-auto flex h-9 w-9 items-center justify-center rounded-full text-sm transition-all sm:h-10 sm:w-10 ${
+                                      selected
+                                        ? "bg-tv-blue font-bold text-white"
+                                        : between
+                                          ? "bg-blue-100 text-tv-blue"
+                                          : "hover:bg-neutral-200"
+                                    }`}
+                                  >
+                                    {date.getDate()}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="my-5 border-t border-neutral-200" />
+
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { label: "Tonight", value: "today" },
+                        { label: "Tomorrow night", value: "tomorrow" },
+                        { label: "This weekend", value: "weekend" },
+                        { label: "Next weekend", value: "nextWeekend" },
+                      ].map((item) => (
+                        <button
+                          type="button"
+                          key={item.value}
+                          onClick={() => selectQuickDate(item.value)}
+                          className="rounded-full border border-neutral-300 px-3 py-2 text-xs font-semibold hover:border-tv-blue hover:text-tv-blue sm:px-4 sm:text-sm"
+                        >
+                          <span className="mr-1">▣</span>
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="mt-5 flex items-center justify-between">
+                      <span className="text-sm text-neutral-500">
+                        {formatDate(checkIn)} - {formatDate(checkOut)}
+                      </span>
+
+                      <button
+                        type="button"
+                        disabled={!checkIn || !checkOut}
+                        onClick={() => setShowCalendar(false)}
+                        className="rounded-lg bg-tv-blue px-8 py-3 font-bold text-white hover:bg-tv-blue-dark disabled:opacity-50"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="relative min-w-0 border-t border-neutral-300 lg:border-l lg:border-t-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowGuests(!showGuests);
+                    setShowCalendar(false);
+                    setShowDestinations(false);
+                  }}
+                  className={`${field} min-h-[74px] w-full ${
+                    showGuests
+                      ? "ring-2 ring-inset ring-tv-blue"
+                      : ""
+                  }`}
+                >
+                  <GuestsIcon />
+
+                  <span className="flex min-w-0 flex-col">
+                    <span className="text-sm text-neutral-500">
+                      Guests and rooms
+                    </span>
+
+                    <span className="whitespace-nowrap font-bold">
+                      {guestLabel}
+                    </span>
+                  </span>
+                </button>
+
+                {showGuests && (
+                  <div className="absolute right-0 top-[calc(100%-2px)] z-50 max-h-[75vh] w-[min(440px,calc(100vw-32px))] overflow-y-auto rounded-xl bg-white p-4 shadow-[0_15px_35px_rgba(0,0,0,0.3)] sm:rounded-2xl sm:p-6 lg:p-8">
+                    {[
+                      {
+                        label: "Adults",
+                        value: adults,
+                        setter: setAdults,
+                        min: 1,
+                      },
+                      {
+                        label: "Children",
+                        value: children,
+                        setter: setChildren,
+                        min: 0,
+                      },
+                      {
+                        label: "Rooms",
+                        value: rooms,
+                        setter: setRooms,
+                        min: 1,
+                      },
+                    ].map((item) => (
+                      <div
+                        key={item.label}
+                        className="mb-6 flex items-center justify-between gap-3"
+                      >
+                        <span className="font-bold">
+                          {item.label}
+                        </span>
+
+                        <div className="flex items-center gap-3">
+                          <button
+                            type="button"
+                            disabled={item.value <= item.min}
+                            onClick={() =>
+                              updateCount(item.setter, -1, item.min)
+                            }
+                            className="flex h-11 w-11 items-center justify-center rounded-full border border-tv-blue text-2xl text-tv-blue hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-30"
+                          >
+                            −
+                          </button>
+
+                          <span className="w-10 text-center text-lg">
+                            {item.value}
+                          </span>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              updateCount(item.setter, 1, item.min)
+                            }
+                            className="flex h-11 w-11 items-center justify-center rounded-full border border-tv-blue text-2xl text-tv-blue hover:bg-blue-50"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+
+                    <div className="border-t border-neutral-200 pt-6">
+                      <label className="flex cursor-pointer items-center justify-between gap-3">
+                        <span>
+                          <span className="block font-bold">
+                            Pet-friendly
+                          </span>
+
+                          <span className="text-sm text-neutral-600">
+                            Only show stays that allow pets
+                          </span>
+                        </span>
+
+                        <input
+                          type="checkbox"
+                          checked={petFriendly}
+                          onChange={(e) =>
+                            setPetFriendly(e.target.checked)
+                          }
+                          className="h-5 w-5 accent-tv-blue"
+                        />
+                      </label>
+                    </div>
+
+                    <div className="mt-7 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAdults(2);
+                          setChildren(0);
+                          setRooms(1);
+                          setPetFriendly(false);
+                        }}
+                        className="font-bold text-neutral-400 hover:text-neutral-700"
+                      >
+                        RESET
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setShowGuests(false)}
+                        className="rounded-lg bg-tv-blue px-10 py-3 font-bold text-white hover:bg-tv-blue-dark"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center border-t border-neutral-300 p-2 lg:border-l lg:border-t-0">
+                <button
+                  type="submit"
+                  className="h-[50px] w-full rounded-lg bg-tv-blue px-6 text-base font-bold text-white transition-colors hover:bg-tv-blue-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tv-blue sm:h-[54px] sm:text-lg"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
+
+            <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-5 px-1 sm:mt-9 sm:justify-between sm:gap-x-7 sm:px-2">
+              {partners.map((p) => (
+                <li key={p.name} className={p.className}>
+                  {p.name}
+                </li>
+              ))}
+
+              <li className="text-sm text-neutral-500">
+                +100 more
               </li>
-            ))}
-
-            <li className="text-sm text-neutral-500">
-              +100 more
-            </li>
-          </ul>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -793,8 +789,9 @@ function SearchCard() {
 
 function PromoBanner() {
   return (
-    <section className="mx-auto mt-7 w-full max-w-[1260px] px-3 pb-10 sm:mt-10 sm:px-6 sm:pb-14 lg:mt-12 lg:px-8 lg:pb-16 xl:px-0">
-      <div className="relative flex min-h-[220px] overflow-hidden rounded-2xl bg-white shadow-[0_6px_24px_rgba(0,0,0,0.08)] sm:min-h-[270px] sm:rounded-3xl lg:h-[340px]">
+    <section className="mx-auto mt-8 w-full max-w-[1260px] px-4 pb-10 sm:mt-10 sm:px-6 sm:pb-14 lg:mt-12 lg:px-8 lg:pb-16">
+      <div className="relative flex min-h-[220px] w-full items-stretch overflow-hidden rounded-2xl bg-white shadow-[0_6px_24px_rgba(0,0,0,0.08)] sm:min-h-[270px] sm:rounded-3xl lg:h-[340px]">
+
         <div className="w-3 shrink-0 bg-tv-red sm:w-10 lg:w-[65px]" />
         <div className="w-3 shrink-0 bg-tv-orange sm:w-10 lg:w-[65px]" />
 
@@ -838,8 +835,6 @@ function PromoBanner() {
         </div>
 
         <div className="w-5 shrink-0 bg-tv-blue sm:w-16 lg:w-[130px]" />
-
-        
       </div>
     </section>
   );
@@ -847,10 +842,10 @@ function PromoBanner() {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen w-full overflow-x-hidden bg-white">
       <Header />
 
-      <main>
+      <main className="w-full">
         <SearchCard />
         <PromoBanner />
         <HotDeals />

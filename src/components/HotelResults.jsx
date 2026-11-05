@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -13,8 +14,10 @@ import {
   X,
   CalendarDays,
 } from "lucide-react";
+
 import SiteHeader from "./SiteHeader";
 import HotelGalleryModal from "./HotelGalleryModal";
+
 import {
   cities,
   findCity,
@@ -26,6 +29,7 @@ import {
   toISO,
   searchUrl,
 } from "../data/cities";
+
 import {
   getCityHotels,
   normalizeHotel,
@@ -72,32 +76,47 @@ const FACILITY_OPTIONS = [
   "Room service",
 ];
 
-const TYPE_OPTIONS = ["Hotel", "Resort", "Serviced apartment"];
+const TYPE_OPTIONS = [
+  "Hotel",
+  "Resort",
+  "Serviced apartment",
+];
 
 const round5 = (n) => Math.round(n / 5) * 5;
 
 const parseCount = (text) => {
   const value = String(text || "").toLowerCase().replace(/,/g, "");
   const number = parseFloat(value);
+
   if (Number.isNaN(number)) return 0;
+
   return Math.round(value.includes("k") ? number * 1000 : number);
 };
-const rupees = (n) => `₹${Number(n).toLocaleString("en-IN")}`;
+
+const rupees = (n) =>
+  `₹${Number(n).toLocaleString("en-IN")}`;
 
 function applyFilters(list, f) {
   return list.filter((h) => {
     const km = parseDistance(h.distance);
+
     if (h.shown > f.maxPrice) return false;
     if (f.types.length && !f.types.includes(h.type)) return false;
     if (h.score < f.minScore) return false;
     if (f.stars.length && !f.stars.includes(h.stars)) return false;
     if (f.breakfast && !h.breakfast) return false;
     if (f.pool && !h.pool) return false;
-    if (f.ac && !h.facilities.includes("Air conditioning")) return false;
+
+    if (
+      f.ac &&
+      !h.facilities.includes("Air conditioning")
+    ) return false;
+
     if (f.halfBoard && !h.halfBoard) return false;
     if (f.nearCentre && km > 3) return false;
     if (f.hotDeal && !h.hotDeal) return false;
     if (f.maxDistance && km > f.maxDistance) return false;
+
     return f.facilities.every(
       (x) =>
         h.facilities.includes(x) ||
@@ -109,10 +128,26 @@ function applyFilters(list, f) {
 
 function sortList(list, sort) {
   const out = [...list];
-  if (sort === "price-low") out.sort((a, b) => a.shown - b.shown);
-  if (sort === "price-high") out.sort((a, b) => b.shown - a.shown);
-  if (sort === "rating") out.sort((a, b) => b.score - a.score);
-  if (sort === "distance") out.sort((a, b) => parseDistance(a.distance) - parseDistance(b.distance));
+
+  if (sort === "price-low") {
+    out.sort((a, b) => a.shown - b.shown);
+  }
+
+  if (sort === "price-high") {
+    out.sort((a, b) => b.shown - a.shown);
+  }
+
+  if (sort === "rating") {
+    out.sort((a, b) => b.score - a.score);
+  }
+
+  if (sort === "distance") {
+    out.sort(
+      (a, b) =>
+        parseDistance(a.distance) - parseDistance(b.distance)
+    );
+  }
+
   return out;
 }
 
@@ -123,16 +158,28 @@ const countActive = (f) =>
   (f.minScore ? 1 : 0) +
   f.stars.length +
   f.facilities.length +
-  ["breakfast", "pool", "ac", "halfBoard", "nearCentre", "hotDeal"].filter((k) => f[k]).length +
+  [
+    "breakfast",
+    "pool",
+    "ac",
+    "halfBoard",
+    "nearCentre",
+    "hotDeal",
+  ].filter((k) => f[k]).length +
   (f.maxDistance ? 1 : 0);
-
 
 function seededNoise(n) {
   const x = Math.sin(n * 12.9898) * 43758.5453;
   return x - Math.floor(x);
 }
 
-function DatePriceChart({ cityName, basePrice, month, initialStart, onApply }) {
+function DatePriceChart({
+  cityName,
+  basePrice,
+  month,
+  initialStart,
+  onApply,
+}) {
   const [open, setOpen] = useState(true);
   const [start, setStart] = useState(initialStart);
   const [inDate, setInDate] = useState(null);
@@ -140,15 +187,39 @@ function DatePriceChart({ cityName, basePrice, month, initialStart, onApply }) {
   const [hint, setHint] = useState("");
 
   const days = useMemo(
-    () => Array.from({ length: 23 }, (_, i) => new Date(start.getFullYear(), start.getMonth(), start.getDate() + i)),
+    () =>
+      Array.from(
+        { length: 23 },
+        (_, i) =>
+          new Date(
+            start.getFullYear(),
+            start.getMonth(),
+            start.getDate() + i
+          )
+      ),
     [start]
   );
 
   const priceOf = (d) => {
     const weekday = d.getDay();
-    const weekend = weekday === 5 || weekday === 6 ? 1.3 : weekday === 0 ? 1.1 : 1;
-    const noise = 0.85 + seededNoise(d.getTime() / 86400000) * 0.4;
-    return round5(basePrice * monthFactor(cityName, MONTHS[d.getMonth()]) * weekend * noise);
+
+    const weekend =
+      weekday === 5 || weekday === 6
+        ? 1.3
+        : weekday === 0
+          ? 1.1
+          : 1;
+
+    const noise =
+      0.85 +
+      seededNoise(d.getTime() / 86400000) * 0.4;
+
+    return round5(
+      basePrice *
+        monthFactor(cityName, MONTHS[d.getMonth()]) *
+        weekend *
+        noise
+    );
   };
 
   const prices = days.map(priceOf);
@@ -156,13 +227,20 @@ function DatePriceChart({ cityName, basePrice, month, initialStart, onApply }) {
   const cheapest = Math.min(...prices);
 
   const shift = (n) => {
-    const next = new Date(start.getFullYear(), start.getMonth(), start.getDate() + n);
+    const next = new Date(
+      start.getFullYear(),
+      start.getMonth(),
+      start.getDate() + n
+    );
+
     setStart(next < TODAY ? TODAY : next);
   };
 
   const pick = (d) => {
     if (d < TODAY) return;
+
     setHint("");
+
     if (!inDate || outDate || d <= inDate) {
       setInDate(d);
       setOutDate(null);
@@ -171,7 +249,13 @@ function DatePriceChart({ cityName, basePrice, month, initialStart, onApply }) {
     }
   };
 
-  const fmt = (d) => (d ? d.toLocaleDateString("en-GB", { day: "numeric", month: "short" }) : "");
+  const fmt = (d) =>
+    d
+      ? d.toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "short",
+        })
+      : "";
 
   return (
     <section className="rounded-2xl bg-white shadow-sm">
@@ -184,12 +268,17 @@ function DatePriceChart({ cityName, basePrice, month, initialStart, onApply }) {
         <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-sky-50 text-sky-600">
           <CalendarDays />
         </span>
+
         <span className="flex-1">
-          <span className="block text-xl font-bold">Find the best dates to go</span>
+          <span className="block text-xl font-bold">
+            Find the best dates to go
+          </span>
+
           <span className="block text-neutral-600">
             Based on lowest prices on trivago from the last 7 days
           </span>
         </span>
+
         {open ? <ChevronUp /> : <ChevronDown />}
       </button>
 
@@ -215,13 +304,27 @@ function DatePriceChart({ cityName, basePrice, month, initialStart, onApply }) {
               <div className="grid flex-1 grid-cols-[repeat(23,minmax(0,1fr))] gap-1">
                 {days.map((d, i) => {
                   const selected =
-                    (inDate && d.getTime() === inDate.getTime()) || (outDate && d.getTime() === outDate.getTime());
-                  const inRange = inDate && outDate && d > inDate && d < outDate;
+                    (inDate && d.getTime() === inDate.getTime()) ||
+                    (outDate && d.getTime() === outDate.getTime());
+
+                  const inRange =
+                    inDate && outDate && d > inDate && d < outDate;
+
                   const past = d < TODAY;
                   const low = prices[i] === cheapest;
-                  const height = Math.max(6, Math.round((prices[i] / max) * 110));
+
+                  const height = Math.max(
+                    6,
+                    Math.round((prices[i] / max) * 110)
+                  );
+
                   const monthLabel =
-                    i === 0 || d.getDate() === 1 ? d.toLocaleDateString("en-GB", { month: "long" }) : "";
+                    i === 0 || d.getDate() === 1
+                      ? d.toLocaleDateString("en-GB", {
+                          month: "long",
+                        })
+                      : "";
+
                   return (
                     <button
                       key={d.getTime()}
@@ -238,20 +341,35 @@ function DatePriceChart({ cityName, basePrice, month, initialStart, onApply }) {
                             selected
                               ? "bg-sky-600"
                               : inRange
-                              ? "bg-sky-300"
-                              : low
-                              ? "bg-green-500"
-                              : "bg-sky-200 group-hover:bg-sky-400"
+                                ? "bg-sky-300"
+                                : low
+                                  ? "bg-green-500"
+                                  : "bg-sky-200 group-hover:bg-sky-400"
                           }`}
                         />
                       </span>
+
                       <span className="mt-1 text-neutral-500">
-                        {d.toLocaleDateString("en-GB", { weekday: "short" }).slice(0, 2)}
+                        {d
+                          .toLocaleDateString("en-GB", {
+                            weekday: "short",
+                          })
+                          .slice(0, 2)}
                       </span>
-                      <span className={selected ? "font-bold text-sky-700" : "font-semibold"}>
+
+                      <span
+                        className={
+                          selected
+                            ? "font-bold text-sky-700"
+                            : "font-semibold"
+                        }
+                      >
                         {String(d.getDate()).padStart(2, "0")}
                       </span>
-                      <span className="h-4 whitespace-nowrap text-[11px] text-neutral-600">{monthLabel}</span>
+
+                      <span className="h-4 whitespace-nowrap text-[11px] text-neutral-600">
+                        {monthLabel}
+                      </span>
                     </button>
                   );
                 })}
@@ -269,21 +387,34 @@ function DatePriceChart({ cityName, basePrice, month, initialStart, onApply }) {
           </div>
 
           <p className="mt-2 text-xs text-neutral-500">
-            Green bar = cheapest day in view ({rupees(cheapest)}). Pick a check-in day, then a check-out day.
+            Green bar = cheapest day in view ({rupees(cheapest)}).
+            Pick a check-in day, then a check-out day.
           </p>
 
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-neutral-50 p-4">
             <div className="flex flex-wrap gap-6 text-lg">
               <span className="flex items-center gap-2">
-                <CalendarDays size={20} /> {inDate ? fmt(inDate) : "Check-in"}
+                <CalendarDays size={20} />
+                {inDate ? fmt(inDate) : "Check-in"}
               </span>
+
               <span className="flex items-center gap-2">
-                <CalendarDays size={20} /> {outDate ? fmt(outDate) : "Check-out"}
+                <CalendarDays size={20} />
+                {outDate ? fmt(outDate) : "Check-out"}
               </span>
-              {!inDate && <span className="text-sm text-neutral-500">Showing {month}</span>}
+
+              {!inDate && (
+                <span className="text-sm text-neutral-500">
+                  Showing {month}
+                </span>
+              )}
             </div>
+
             <div className="flex items-center gap-3">
-              {hint && <span className="text-sm text-red-600">{hint}</span>}
+              {hint && (
+                <span className="text-sm text-red-600">{hint}</span>
+              )}
+
               <button
                 type="button"
                 onClick={() => {
@@ -291,6 +422,7 @@ function DatePriceChart({ cityName, basePrice, month, initialStart, onApply }) {
                     setHint("Choose check-in and check-out first");
                     return;
                   }
+
                   onApply(inDate, outDate);
                 }}
                 className="flex items-center gap-2 rounded-xl border border-black px-5 py-2.5 font-bold hover:bg-black hover:text-white"
@@ -305,37 +437,66 @@ function DatePriceChart({ cityName, basePrice, month, initialStart, onApply }) {
   );
 }
 
+function ModalHeader({ title, onClose }) {
+  return (
+    <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-5">
+      <h2 className="text-xl font-bold">{title}</h2>
+
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close modal"
+        className="rounded-full p-2 transition hover:bg-neutral-100"
+      >
+        <X size={22} />
+      </button>
+    </div>
+  );
+}
+
 function FiltersModal({ filters, hotels, onApply, onClose }) {
   const [draft, setDraft] = useState(filters);
+
   const count = applyFilters(hotels, draft).length;
 
-  const toggleIn = (key, value) =>
+  const toggleIn = (key, value) => {
     setDraft((d) => ({
       ...d,
-      [key]: d[key].includes(value) ? d[key].filter((x) => x !== value) : [...d[key], value],
+      [key]: d[key].includes(value)
+        ? d[key].filter((x) => x !== value)
+        : [...d[key], value],
     }));
+  };
 
   const pill = (on) =>
-    `rounded-full border px-4 py-2 text-sm font-semibold ${
-      on ? "border-sky-600 bg-sky-50 text-sky-700" : "border-neutral-300"
+    `rounded-full border px-4 py-2 text-sm font-semibold transition ${
+      on
+        ? "border-sky-600 bg-sky-50 text-sky-700"
+        : "border-neutral-300 hover:border-neutral-600"
     }`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="flex max-h-[90vh] w-full max-w-xl flex-col rounded-2xl bg-white">
-        <div className="flex items-center justify-between border-b p-5">
-          <h2 className="text-xl font-bold">All filters</h2>
-          <button type="button" onClick={onClose} aria-label="Close filters">
-            <X />
-          </button>
-        </div>
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="flex max-h-[90vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
+        <ModalHeader title="All filters" onClose={onClose} />
 
-        <div className="space-y-6 overflow-y-auto p-5">
+        <div className="space-y-6 overflow-y-auto p-6">
           <fieldset>
-            <legend className="mb-2 font-bold">Property type</legend>
+            <legend className="mb-3 font-bold">Property type</legend>
+
             <div className="flex flex-wrap gap-2">
               {TYPE_OPTIONS.map((t) => (
-                <button type="button" key={t} onClick={() => toggleIn("types", t)} className={pill(draft.types.includes(t))}>
+                <button
+                  type="button"
+                  key={t}
+                  onClick={() => toggleIn("types", t)}
+                  className={pill(draft.types.includes(t))}
+                >
                   {t}
                 </button>
               ))}
@@ -343,10 +504,16 @@ function FiltersModal({ filters, hotels, onApply, onClose }) {
           </fieldset>
 
           <fieldset>
-            <legend className="mb-2 font-bold">Star rating</legend>
+            <legend className="mb-3 font-bold">Star rating</legend>
+
             <div className="flex gap-2">
               {[3, 4, 5].map((s) => (
-                <button type="button" key={s} onClick={() => toggleIn("stars", s)} className={pill(draft.stars.includes(s))}>
+                <button
+                  type="button"
+                  key={s}
+                  onClick={() => toggleIn("stars", s)}
+                  className={pill(draft.stars.includes(s))}
+                >
                   {s} ★
                 </button>
               ))}
@@ -354,7 +521,8 @@ function FiltersModal({ filters, hotels, onApply, onClose }) {
           </fieldset>
 
           <fieldset>
-            <legend className="mb-2 font-bold">Guest rating</legend>
+            <legend className="mb-3 font-bold">Guest rating</legend>
+
             <div className="flex flex-wrap gap-2">
               {[
                 [0, "Any"],
@@ -362,7 +530,14 @@ function FiltersModal({ filters, hotels, onApply, onClose }) {
                 [8, "8.0+"],
                 [9, "9.0+"],
               ].map(([v, label]) => (
-                <button type="button" key={v} onClick={() => setDraft((d) => ({ ...d, minScore: v }))} className={pill(draft.minScore === v)}>
+                <button
+                  type="button"
+                  key={v}
+                  onClick={() =>
+                    setDraft((d) => ({ ...d, minScore: v }))
+                  }
+                  className={pill(draft.minScore === v)}
+                >
                   {label}
                 </button>
               ))}
@@ -370,10 +545,14 @@ function FiltersModal({ filters, hotels, onApply, onClose }) {
           </fieldset>
 
           <fieldset>
-            <legend className="mb-2 font-bold">Facilities</legend>
-            <div className="grid grid-cols-2 gap-2">
+            <legend className="mb-3 font-bold">Facilities</legend>
+
+            <div className="grid grid-cols-2 gap-3">
               {FACILITY_OPTIONS.map((x) => (
-                <label key={x} className="flex items-center gap-2 text-sm">
+                <label
+                  key={x}
+                  className="flex cursor-pointer items-center gap-2 text-sm"
+                >
                   <input
                     type="checkbox"
                     checked={draft.facilities.includes(x)}
@@ -387,27 +566,78 @@ function FiltersModal({ filters, hotels, onApply, onClose }) {
           </fieldset>
 
           <fieldset>
-            <legend className="mb-2 font-bold">Maximum price per night: {rupees(draft.maxPrice)}</legend>
+            <legend className="mb-3 font-bold">Other preferences</legend>
+
+            <div className="space-y-3">
+              {[
+                ["hotDeal", "Hot deals"],
+                ["breakfast", "Breakfast included"],
+                ["pool", "Swimming pool"],
+                ["ac", "Air conditioning"],
+                ["halfBoard", "Half board"],
+                ["nearCentre", "Near city centre"],
+              ].map(([key, label]) => (
+                <label
+                  key={key}
+                  className="flex cursor-pointer items-center gap-3 text-sm"
+                >
+                  <input
+                    type="checkbox"
+                    checked={draft[key]}
+                    onChange={(e) =>
+                      setDraft((d) => ({
+                        ...d,
+                        [key]: e.target.checked,
+                      }))
+                    }
+                    className="h-4 w-4 accent-sky-600"
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend className="mb-3 font-bold">
+              Maximum price per night: {rupees(draft.maxPrice)}
+            </legend>
+
             <input
               type="range"
               min="1000"
               max={MAX_PRICE}
               step="1000"
               value={draft.maxPrice}
-              onChange={(e) => setDraft((d) => ({ ...d, maxPrice: Number(e.target.value) }))}
+              onChange={(e) =>
+                setDraft((d) => ({
+                  ...d,
+                  maxPrice: Number(e.target.value),
+                }))
+              }
               className="w-full accent-sky-600"
             />
           </fieldset>
         </div>
 
-        <div className="flex items-center justify-between border-t p-5">
-          <button type="button" onClick={() => setDraft({ ...EMPTY_FILTERS, sort: draft.sort })} className="font-bold underline">
+        <div className="flex items-center justify-between gap-3 border-t border-neutral-200 p-5">
+          <button
+            type="button"
+            onClick={() =>
+              setDraft({
+                ...EMPTY_FILTERS,
+                sort: draft.sort,
+              })
+            }
+            className="font-bold text-neutral-600 underline hover:text-black"
+          >
             Clear all
           </button>
+
           <button
             type="button"
             onClick={() => onApply(draft)}
-            className="rounded-xl bg-sky-600 px-6 py-3 font-bold text-white hover:bg-sky-700"
+            className="rounded-xl bg-sky-600 px-7 py-3 font-bold text-white transition hover:bg-sky-700"
           >
             Show {count} hotel{count === 1 ? "" : "s"}
           </button>
@@ -418,7 +648,170 @@ function FiltersModal({ filters, hotels, onApply, onClose }) {
 }
 
 
-function HotelCard({ hotel, isFavorite, onFavorite, onShare, onOpen, onGallery }) {
+function QuickOptionModal({
+  type,
+  filters,
+  setF,
+  onClose,
+}) {
+  if (!type) return null;
+
+  const titles = {
+    sort: "Sort hotels",
+    price: "Filter by price",
+    location: "Distance to city centre",
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">
+        <ModalHeader
+          title={titles[type]}
+          onClose={onClose}
+        />
+
+        <div className="space-y-3 p-6">
+          {type === "sort" && (
+            <div className="space-y-2">
+              {SORT_OPTIONS.map(([value, label]) => (
+                <button
+                  type="button"
+                  key={value}
+                  onClick={() => {
+                    setF({ sort: value });
+                    onClose();
+                  }}
+                  className={`flex w-full items-center justify-between rounded-xl border px-4 py-3 text-left transition ${
+                    filters.sort === value
+                      ? "border-sky-600 bg-sky-50 font-bold text-sky-700"
+                      : "border-neutral-200 hover:bg-neutral-50"
+                  }`}
+                >
+                  {label}
+
+                  {filters.sort === value && (
+                    <span className="text-lg">✓</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {type === "price" && (
+            <div>
+              <div className="mb-5 flex items-center justify-between">
+                <span className="font-semibold">
+                  Maximum price per night
+                </span>
+
+                <span className="text-lg font-bold text-sky-700">
+                  {rupees(filters.maxPrice)}
+                </span>
+              </div>
+
+              <input
+                type="range"
+                min="1000"
+                max={MAX_PRICE}
+                step="1000"
+                value={filters.maxPrice}
+                onChange={(e) =>
+                  setF({
+                    maxPrice: Number(e.target.value),
+                  })
+                }
+                className="w-full accent-sky-600"
+              />
+
+              <div className="mt-2 flex justify-between text-sm text-neutral-500">
+                <span>₹1,000</span>
+                <span>₹1,00,000+</span>
+              </div>
+
+              <div className="mt-5 rounded-xl bg-neutral-50 p-4">
+                <p className="text-sm text-neutral-600">
+                  Showing hotels up to
+                </p>
+
+                <p className="mt-1 text-2xl font-extrabold">
+                  {rupees(filters.maxPrice)}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setF({ maxPrice: MAX_PRICE });
+                }}
+                className="mt-4 text-sm font-bold text-sky-700 underline"
+              >
+                Reset price
+              </button>
+
+              <button
+                type="button"
+                onClick={onClose}
+                className="mt-5 w-full rounded-xl bg-sky-600 py-3 font-bold text-white hover:bg-sky-700"
+              >
+                Apply price
+              </button>
+            </div>
+          )}
+
+          {type === "location" && (
+            <div className="space-y-2">
+              <p className="mb-3 text-sm text-neutral-500">
+                Choose how far your hotel can be from the city centre.
+              </p>
+
+              {[
+                [0, "Any distance"],
+                [2, "Within 2 km"],
+                [5, "Within 5 km"],
+                [10, "Within 10 km"],
+              ].map(([km, label]) => (
+                <button
+                  type="button"
+                  key={km}
+                  onClick={() => {
+                    setF({ maxDistance: km });
+                    onClose();
+                  }}
+                  className={`flex w-full items-center justify-between rounded-xl border px-4 py-3 text-left transition ${
+                    filters.maxDistance === km
+                      ? "border-sky-600 bg-sky-50 font-bold text-sky-700"
+                      : "border-neutral-200 hover:bg-neutral-50"
+                  }`}
+                >
+                  {label}
+
+                  {filters.maxDistance === km && (
+                    <span className="text-lg">✓</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+function HotelCard({
+  hotel,
+  isFavorite,
+  onFavorite,
+  onShare,
+  onOpen,
+  onGallery,
+}) {
   return (
     <article
       id={`hotel-${hotel.id}`}
@@ -430,24 +823,50 @@ function HotelCard({ hotel, isFavorite, onFavorite, onShare, onOpen, onGallery }
           alt={hotel.name}
           loading="lazy"
           onClick={onGallery}
-          onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onGallery()}
+          onKeyDown={(e) =>
+            (e.key === "Enter" || e.key === " ") && onGallery()
+          }
           role="button"
           tabIndex={0}
           title="View photos"
-          onError={(e) => (e.currentTarget.style.background = "#e5e7eb")}
+          onError={(e) =>
+            (e.currentTarget.style.background = "#e5e7eb")
+          }
           className="h-52 w-full cursor-pointer rounded-xl object-cover md:h-full md:min-h-[188px]"
         />
+
         {hotel.popular && (
           <span className="absolute left-0 top-0 rounded-br-lg rounded-tl-xl bg-sky-600 px-2 py-0.5 text-xs font-bold text-white">
             Popular choice
           </span>
         )}
+
         <div className="absolute right-3 top-3 flex items-center gap-3 rounded-full bg-black/60 px-3 py-2 text-white">
-          <button type="button" onClick={onShare} aria-label="Share hotel">
+          <button
+            type="button"
+            onClick={onShare}
+            aria-label="Share hotel"
+          >
             <Share2 size={18} />
           </button>
-          <button type="button" onClick={onFavorite} aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}>
-            <Heart size={18} className={isFavorite ? "fill-red-500 text-red-500" : ""} />
+
+          <button
+            type="button"
+            onClick={onFavorite}
+            aria-label={
+              isFavorite
+                ? "Remove from favorites"
+                : "Save to favorites"
+            }
+          >
+            <Heart
+              size={18}
+              className={
+                isFavorite
+                  ? "fill-red-500 text-red-500"
+                  : ""
+              }
+            />
           </button>
         </div>
       </div>
@@ -461,22 +880,37 @@ function HotelCard({ hotel, isFavorite, onFavorite, onShare, onOpen, onGallery }
           >
             {hotel.name}
           </h2>
-          <span className="text-sm tracking-wider text-orange-500" aria-label={`${hotel.stars} stars`}>
+
+          <span
+            className="text-sm tracking-wider text-orange-500"
+            aria-label={`${hotel.stars} stars`}
+          >
             {"★".repeat(hotel.stars)}
           </span>
         </div>
 
         <div className="mt-2 flex flex-wrap items-center gap-2">
-          <span className="rounded-md bg-green-700 px-2 py-0.5 text-sm font-bold text-white">{hotel.score}</span>
-          <span className="font-semibold">{getLabel(hotel.score)}</span>
-          <span className="text-neutral-600">({hotel.reviews} ratings)</span>
+          <span className="rounded-md bg-green-700 px-2 py-0.5 text-sm font-bold text-white">
+            {hotel.score}
+          </span>
+
+          <span className="font-semibold">
+            {getLabel(hotel.score)}
+          </span>
+
+          <span className="text-neutral-600">
+            ({hotel.reviews} ratings)
+          </span>
         </div>
 
         <p className="mt-3 flex items-center gap-2 text-neutral-700">
-          <MapPin size={17} /> {hotel.distance} to City centre
+          <MapPin size={17} />
+          {hotel.distance} to City centre
         </p>
+
         <p className="mt-2 flex items-start gap-2 text-neutral-700">
-          <Sparkles size={17} className="mt-1 shrink-0" /> <span>{hotel.description}</span>
+          <Sparkles size={17} className="mt-1 shrink-0" />
+          <span>{hotel.description}</span>
         </p>
       </div>
 
@@ -484,11 +918,12 @@ function HotelCard({ hotel, isFavorite, onFavorite, onShare, onOpen, onGallery }
         <p>
           See prices from <strong>{hotel.sites} sites</strong>
         </p>
+
         <div className="flex items-end justify-between gap-3">
-          <p>
-           
-            <span className="text-2xl font-extrabold">{rupees(hotel.shown)}</span>
+          <p className="text-2xl font-extrabold">
+            {rupees(hotel.shown)}
           </p>
+
           <button
             type="button"
             onClick={onOpen}
@@ -502,14 +937,20 @@ function HotelCard({ hotel, isFavorite, onFavorite, onShare, onOpen, onGallery }
   );
 }
 
+
 export default function HotelResults() {
   const { state } = useLocation();
   const [params] = useSearchParams();
+
   const key = [
-    params.get("city") || state?.destination || state?.hotel?.location || "",
+    params.get("city") ||
+      state?.destination ||
+      state?.hotel?.location ||
+      "",
     params.get("month") || "",
     params.get("checkIn") ? "dated" : "",
   ].join("|");
+
   return <ResultsPage key={key} />;
 }
 
@@ -519,18 +960,37 @@ function ResultsPage() {
   const [params] = useSearchParams();
 
   const hasCityParam = Boolean(params.get("city"));
-  const cityParam = params.get("city") || state?.destination || state?.hotel?.location?.split(",")[0].trim() || "";
-  const checkIn = fromISO(params.get("checkIn") || (hasCityParam ? "" : state?.checkIn));
-  const checkOut = fromISO(params.get("checkOut") || (hasCityParam ? "" : state?.checkOut));
+
+  const cityParam =
+    params.get("city") ||
+    state?.destination ||
+    state?.hotel?.location?.split(",")[0].trim() ||
+    "";
+
+  const checkIn = fromISO(
+    params.get("checkIn") || (hasCityParam ? "" : state?.checkIn)
+  );
+
+  const checkOut = fromISO(
+    params.get("checkOut") || (hasCityParam ? "" : state?.checkOut)
+  );
+
   const month = params.get("month") || "";
+
   const adults = Number(params.get("adults") || state?.adults || 2);
   const kids = Number(params.get("children") || state?.children || 0);
   const rooms = Number(params.get("rooms") || state?.rooms || 1);
 
   const cityObj = findCity(cityParam);
   const cityName = cityObj?.name || cityParam;
+
   const monthMode = Boolean(month) && !checkIn;
-  const activeMonth = monthMode ? month : checkIn ? MONTHS[checkIn.getMonth()] : "";
+
+  const activeMonth = monthMode
+    ? month
+    : checkIn
+      ? MONTHS[checkIn.getMonth()]
+      : "";
 
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [panel, setPanel] = useState("");
@@ -538,16 +998,22 @@ function ResultsPage() {
   const [visible, setVisible] = useState(PAGE_SIZE);
   const [galleryHotel, setGalleryHotel] = useState(null);
   const [toast, setToast] = useState("");
+
   const [favorites, setFavorites] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem("trivagoFavorites") || "[]");
+      return JSON.parse(
+        localStorage.getItem("trivagoFavorites") || "[]"
+      );
     } catch {
       return [];
     }
   });
 
   useEffect(() => {
-    localStorage.setItem("trivagoFavorites", JSON.stringify(favorites));
+    localStorage.setItem(
+      "trivagoFavorites",
+      JSON.stringify(favorites)
+    );
   }, [favorites]);
 
   useEffect(() => {
@@ -556,54 +1022,129 @@ function ResultsPage() {
 
   useEffect(() => {
     if (!toast) return undefined;
+
     const t = setTimeout(() => setToast(""), 2200);
+
     return () => clearTimeout(t);
   }, [toast]);
 
   const pickedHotel = state?.hotel;
+
   const priced = (() => {
     const factor = monthFactor(cityName, activeMonth);
     let list = getCityHotels(cityName);
-    if (pickedHotel && pickedHotel.location?.split(",")[0].trim().toLowerCase() === cityName.toLowerCase()) {
-      list = [normalizeHotel(pickedHotel), ...list.filter((h) => h.name !== pickedHotel.name)];
+
+    if (
+      pickedHotel &&
+      pickedHotel.location?.split(",")[0].trim().toLowerCase() ===
+        cityName.toLowerCase()
+    ) {
+      list = [
+        normalizeHotel(pickedHotel),
+        ...list.filter((h) => h.name !== pickedHotel.name),
+      ];
     }
-    return list.map((h) => ({ ...h, shown: round5(formatPrice(h.price) * factor) }));
+
+    return list.map((h) => ({
+      ...h,
+      shown: round5(formatPrice(h.price) * factor),
+    }));
   })();
 
-  const filtered = sortList(applyFilters(priced, filters), filters.sort);
+  const filtered = sortList(
+    applyFilters(priced, filters),
+    filters.sort
+  );
+
   const shownHotels = filtered.slice(0, visible);
-  const cheapest = priced.length ? Math.min(...priced.map((h) => formatPrice(h.price))) : 3000;
+
+  const cheapest = priced.length
+    ? Math.min(...priced.map((h) => formatPrice(h.price)))
+    : 3000;
 
   const activeCount = countActive(filters);
-  const setF = (patch) => setFilters((f) => ({ ...f, ...patch }));
-  const toggleList = (key, value) =>
-    setF({ [key]: filters[key].includes(value) ? filters[key].filter((x) => x !== value) : [...filters[key], value] });
 
-  const search = ({ city, checkIn: ci, checkOut: co, adults: a, children: c, rooms: r }) => {
+  const setF = (patch) => {
+    setFilters((f) => ({ ...f, ...patch }));
+    setVisible(PAGE_SIZE);
+  };
+
+  const search = ({
+    city,
+    checkIn: ci,
+    checkOut: co,
+    adults: a,
+    children: c,
+    rooms: r,
+  }) => {
     const found = findCity(city);
     const name = found?.name || city;
+
     try {
-      const recent = JSON.parse(localStorage.getItem("trivagoRecentSearches") || "[]");
-      localStorage.setItem("trivagoRecentSearches", JSON.stringify([name, ...recent.filter((x) => x !== name)].slice(0, 6)));
+      const recent = JSON.parse(
+        localStorage.getItem("trivagoRecentSearches") || "[]"
+      );
+
+      localStorage.setItem(
+        "trivagoRecentSearches",
+        JSON.stringify(
+          [name, ...recent.filter((x) => x !== name)].slice(0, 6)
+        )
+      );
+
       localStorage.setItem(
         "hotelSearchData",
-        JSON.stringify({ destination: name, checkIn: toISO(ci), checkOut: toISO(co), adults: a, children: c, rooms: r })
+        JSON.stringify({
+          destination: name,
+          checkIn: toISO(ci),
+          checkOut: toISO(co),
+          adults: a,
+          children: c,
+          rooms: r,
+        })
       );
     } catch {
     }
-    navigate(searchUrl({ city: name, checkIn: ci, checkOut: co, month: ci ? "" : month, adults: a, children: c, rooms: r }));
+
+    navigate(
+      searchUrl({
+        city: name,
+        checkIn: ci,
+        checkOut: co,
+        month: ci ? "" : month,
+        adults: a,
+        children: c,
+        rooms: r,
+      })
+    );
   };
 
   const openHotel = (hotel) => {
     try {
-      const recent = JSON.parse(localStorage.getItem("trivagoRecent") || "[]");
-      localStorage.setItem("trivagoRecent", JSON.stringify([hotel, ...recent.filter((h) => h.id !== hotel.id)].slice(0, 12)));
+      const recent = JSON.parse(
+        localStorage.getItem("trivagoRecent") || "[]"
+      );
+
+      localStorage.setItem(
+        "trivagoRecent",
+        JSON.stringify(
+          [
+            hotel,
+            ...recent.filter((h) => h.id !== hotel.id),
+          ].slice(0, 12)
+        )
+      );
     } catch {
     }
+
     const { shown, ...rest } = hotel;
+
     navigate(`/hotel/${hotel.id}`, {
       state: {
-        hotel: { ...rest, price: rupees(shown) },
+        hotel: {
+          ...rest,
+          price: rupees(shown),
+        },
         checkIn: checkIn ? toISO(checkIn) : undefined,
         checkOut: checkOut ? toISO(checkOut) : undefined,
         guests: adults + kids,
@@ -614,16 +1155,29 @@ function ResultsPage() {
 
   const toggleFavorite = (hotel) => {
     const { shown, ...rest } = hotel;
+
     setFavorites((prev) =>
-      prev.some((h) => h.id === hotel.id) ? prev.filter((h) => h.id !== hotel.id) : [...prev, { ...rest, price: rupees(shown) }]
+      prev.some((h) => h.id === hotel.id)
+        ? prev.filter((h) => h.id !== hotel.id)
+        : [
+            ...prev,
+            {
+              ...rest,
+              price: rupees(shown),
+            },
+          ]
     );
   };
 
   const share = async (hotel) => {
     const url = `${window.location.origin}/hotel/${hotel.id}`;
+
     try {
       if (navigator.share) {
-        await navigator.share({ title: hotel.name, url });
+        await navigator.share({
+          title: hotel.name,
+          url,
+        });
       } else {
         await navigator.clipboard.writeText(url);
         setToast("Link copied to clipboard");
@@ -634,7 +1188,16 @@ function ResultsPage() {
   };
 
   const applyDates = (ci, co) =>
-    navigate(searchUrl({ city: cityName, checkIn: ci, checkOut: co, adults, children: kids, rooms }));
+    navigate(
+      searchUrl({
+        city: cityName,
+        checkIn: ci,
+        checkOut: co,
+        adults,
+        children: kids,
+        rooms,
+      })
+    );
 
   const initialHeader = {
     city: cityName,
@@ -647,36 +1210,26 @@ function ResultsPage() {
     rooms,
   };
 
-  const chipClass = (on) =>
-    `shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition ${
-      on ? "border-sky-600 bg-sky-50 text-sky-700" : "border-neutral-300 bg-white hover:border-neutral-600"
+  const chipClass = (active) =>
+    `flex shrink-0 items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition-all ${
+      active
+        ? "border-sky-600 bg-sky-50 text-sky-700"
+        : "border-neutral-300 bg-white text-neutral-900 hover:border-neutral-600"
     }`;
-
-  const panelChip = (name, active) => (
-    <button
-      key={name}
-      type="button"
-      onClick={() => setPanel(panel === name ? "" : name)}
-      aria-expanded={panel === name}
-      className={`${chipClass(active || panel === name)} flex items-center gap-2`}
-    >
-      {name} <ChevronDown size={16} className={panel === name ? "rotate-180" : ""} />
-    </button>
-  );
-
-  const toggleChip = (label, on, onClick) => (
-    <button key={label} type="button" aria-pressed={on} onClick={onClick} className={chipClass(on)}>
-      {label}
-    </button>
-  );
 
   const chartStart = (() => {
     if (!monthMode) return TODAY;
+
     const first = monthStart(month);
-    const s = new Date(first.getFullYear(), first.getMonth(), first.getDate() - 18);
+
+    const s = new Date(
+      first.getFullYear(),
+      first.getMonth(),
+      first.getDate() - 18
+    );
+
     return s < TODAY ? TODAY : s;
   })();
-
 
   return (
     <div className="min-h-screen bg-[#f6f6f6] text-neutral-900">
@@ -685,136 +1238,130 @@ function ResultsPage() {
         initial={initialHeader}
         onSearch={search}
       >
-        <div className="mx-auto flex max-w-[1800px] items-center gap-2 px-4 pb-3 lg:px-8">
-          <div className="flex flex-1 items-center gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <button
-              type="button"
-              onClick={() => setShowModal(true)}
-              className="flex shrink-0 items-center gap-2 rounded-xl border border-neutral-800 px-4 py-2 text-sm font-semibold"
-            >
-              <SlidersHorizontal size={18} /> Filters{activeCount > 0 && ` (${activeCount})`}
-            </button>
+        <div className="mx-auto flex w-full max-w-[1800px] items-center gap-2 overflow-x-auto px-4 pb-3 lg:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 
-            {panelChip("Sort by", filters.sort !== "recommended")}
-            {panelChip("Price", filters.maxPrice < MAX_PRICE)}
-            {panelChip("Location", filters.maxDistance > 0)}
+          <button
+            type="button"
+            onClick={() => {
+              setPanel("");
+              setShowModal(true);
+            }}
+            className="flex shrink-0 items-center gap-2 rounded-xl border border-neutral-800 bg-white px-5 py-2.5 text-sm font-semibold transition hover:bg-neutral-100"
+          >
+            <SlidersHorizontal size={18} />
+            Filters
+            {activeCount > 0 && ` (${activeCount})`}
+          </button>
 
-            {toggleChip("Hot deals", filters.hotDeal, () => setF({ hotDeal: !filters.hotDeal }))}
-            {toggleChip("Hotels", filters.types.includes("Hotel"), () => toggleList("types", "Hotel"))}
-            {toggleChip("Rating: 8.0+", filters.minScore >= 8, () => setF({ minScore: filters.minScore >= 8 ? 0 : 8 }))}
-            {toggleChip("Near city centre", filters.nearCentre, () => setF({ nearCentre: !filters.nearCentre }))}
-            {toggleChip("Breakfast included", filters.breakfast, () => setF({ breakfast: !filters.breakfast }))}
-            {toggleChip("Resort", filters.types.includes("Resort"), () => toggleList("types", "Resort"))}
-            {toggleChip("Pool", filters.pool, () => setF({ pool: !filters.pool }))}
-            {toggleChip("Serviced apartment", filters.types.includes("Serviced apartment"), () =>
-              toggleList("types", "Serviced apartment")
-            )}
-            {toggleChip("Air conditioning", filters.ac, () => setF({ ac: !filters.ac }))}
-            {toggleChip("Half board", filters.halfBoard, () => setF({ halfBoard: !filters.halfBoard }))}
-          </div>
+          <button
+            type="button"
+            onClick={() =>
+              setPanel(panel === "sort" ? "" : "sort")
+            }
+            className={chipClass(filters.sort !== "recommended")}
+          >
+            Sort by
+            <ChevronDown
+              size={17}
+              className={panel === "sort" ? "rotate-180" : ""}
+            />
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setPanel(panel === "price" ? "" : "price")
+            }
+            className={chipClass(filters.maxPrice < MAX_PRICE)}
+          >
+            Price
+            <ChevronDown
+              size={17}
+              className={panel === "price" ? "rotate-180" : ""}
+            />
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setPanel(panel === "location" ? "" : "location")
+            }
+            className={chipClass(filters.maxDistance > 0)}
+          >
+            Location
+            <ChevronDown
+              size={17}
+              className={panel === "location" ? "rotate-180" : ""}
+            />
+          </button>
 
           {activeCount > 0 && (
             <button
               type="button"
-              onClick={() => setFilters(EMPTY_FILTERS)}
-              className="hidden shrink-0 text-sm font-bold text-sky-700 underline sm:block"
+              onClick={() => {
+                setFilters(EMPTY_FILTERS);
+                setVisible(PAGE_SIZE);
+                setPanel("");
+              }}
+              className="ml-auto shrink-0 whitespace-nowrap px-3 py-2 text-sm font-bold text-sky-700 underline"
             >
               Clear all
             </button>
           )}
-
         </div>
-
-        {panel && (
-          <div className="mx-auto max-w-[1800px] px-4 pb-4 lg:px-8">
-            <div className="w-full max-w-sm rounded-xl border bg-white p-4 shadow-lg">
-              {panel === "Sort by" && (
-                <div role="radiogroup" aria-label="Sort hotels" className="space-y-1">
-                  {SORT_OPTIONS.map(([value, label]) => (
-                    <label key={value} className="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 hover:bg-neutral-100">
-                      <input
-                        type="radio"
-                        name="sort"
-                        checked={filters.sort === value}
-                        onChange={() => {
-                          setF({ sort: value });
-                          setPanel("");
-                        }}
-                        className="accent-sky-600"
-                      />
-                      {label}
-                    </label>
-                  ))}
-                </div>
-              )}
-
-              {panel === "Price" && (
-                <div>
-                  <label className="font-semibold">Maximum price per night: {rupees(filters.maxPrice)}</label>
-                  <input
-                    type="range"
-                    min="1000"
-                    max={MAX_PRICE}
-                    step="1000"
-                    value={filters.maxPrice}
-                    onChange={(e) => setF({ maxPrice: Number(e.target.value) })}
-                    className="mt-3 w-full accent-sky-600"
-                  />
-                  <button type="button" onClick={() => setF({ maxPrice: MAX_PRICE })} className="mt-2 text-sm font-bold text-sky-700 underline">
-                    Reset price
-                  </button>
-                </div>
-              )}
-
-              {panel === "Location" && (
-                <div role="radiogroup" aria-label="Distance to city centre" className="space-y-1">
-                  <p className="mb-1 font-semibold">Distance to city centre</p>
-                  {[
-                    [0, "Any distance"],
-                    [2, "Within 2 km"],
-                    [5, "Within 5 km"],
-                    [10, "Within 10 km"],
-                  ].map(([km, label]) => (
-                    <label key={km} className="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 hover:bg-neutral-100">
-                      <input
-                        type="radio"
-                        name="distance"
-                        checked={filters.maxDistance === km}
-                        onChange={() => {
-                          setF({ maxDistance: km });
-                          setPanel("");
-                        }}
-                        className="accent-sky-600"
-                      />
-                      {label}
-                    </label>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </SiteHeader>
+
+
+      {panel && (
+        <QuickOptionModal
+          type={panel}
+          filters={filters}
+          setF={setF}
+          onClose={() => setPanel("")}
+        />
+      )}
 
       <main className="mx-auto max-w-[1250px] px-4 py-6 lg:px-8">
         {!cityName || (!cityObj && priced.length === 0) ? (
-          <NotFound query={cityName} onPick={(name) => navigate(searchUrl({ city: name, adults, children: kids, rooms }))} />
+          <NotFound
+            query={cityName}
+            onPick={(name) =>
+              navigate(
+                searchUrl({
+                  city: name,
+                  adults,
+                  children: kids,
+                  rooms,
+                })
+              )
+            }
+          />
         ) : (
           <div>
             <div className="space-y-4">
               {monthMode ? (
                 <div>
                   <p className="text-lg">
-                    We found <strong>{cityObj?.hotels || priced.length}</strong> hotels from 184 sites
+                    We found{" "}
+                    <strong>
+                      {cityObj?.hotels || priced.length}
+                    </strong>{" "}
+                    hotels from 184 sites
                   </p>
-                  <h1 className="text-2xl font-bold">More stays you may like in {cityName}</h1>
+
+                  <h1 className="text-2xl font-bold">
+                    More stays you may like in {cityName}
+                  </h1>
                 </div>
               ) : (
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <h1 className="text-2xl font-bold">
                     Hotels in {cityName}
-                    {cityObj ? ` (${cityObj.region}, ${cityObj.country})` : ""}
+                    {cityObj
+                      ? ` (${cityObj.region}, ${cityObj.country})`
+                      : ""}
                   </h1>
+
                   <p className="text-sm text-neutral-500">
                     {filtered.length} of {priced.length} stays
                   </p>
@@ -836,7 +1383,9 @@ function ResultsPage() {
                 <HotelCard
                   key={hotel.id}
                   hotel={hotel}
-                                  isFavorite={favorites.some((h) => h.id === hotel.id)}
+                  isFavorite={favorites.some(
+                    (h) => h.id === hotel.id
+                  )}
                   onFavorite={() => toggleFavorite(hotel)}
                   onShare={() => share(hotel)}
                   onOpen={() => openHotel(hotel)}
@@ -846,11 +1395,21 @@ function ResultsPage() {
 
               {filtered.length === 0 && (
                 <div className="rounded-2xl bg-white p-10 text-center">
-                  <h2 className="text-xl font-bold">No hotels match your filters</h2>
-                  <p className="mt-2 text-neutral-600">Try removing a filter to see more stays in {cityName}.</p>
+                  <h2 className="text-xl font-bold">
+                    No hotels match your filters
+                  </h2>
+
+                  <p className="mt-2 text-neutral-600">
+                    Try removing a filter to see more stays in{" "}
+                    {cityName}.
+                  </p>
+
                   <button
                     type="button"
-                    onClick={() => setFilters(EMPTY_FILTERS)}
+                    onClick={() => {
+                      setFilters(EMPTY_FILTERS);
+                      setVisible(PAGE_SIZE);
+                    }}
                     className="mt-4 rounded-xl bg-sky-600 px-6 py-3 font-bold text-white hover:bg-sky-700"
                   >
                     Clear all filters
@@ -861,7 +1420,9 @@ function ResultsPage() {
               {filtered.length > visible && (
                 <button
                   type="button"
-                  onClick={() => setVisible(visible + PAGE_SIZE)}
+                  onClick={() =>
+                    setVisible(visible + PAGE_SIZE)
+                  }
                   className="mx-auto block rounded-xl border border-neutral-800 bg-white px-6 py-3 font-bold hover:bg-neutral-100"
                 >
                   Show more hotels ({filtered.length - visible} left)
@@ -870,25 +1431,43 @@ function ResultsPage() {
 
               {cityObj && (
                 <div className="pt-4">
-                  <h2 className="mb-3 text-lg font-bold">Explore nearby destinations</h2>
+                  <h2 className="mb-3 text-lg font-bold">
+                    Explore nearby destinations
+                  </h2>
+
                   <div className="flex flex-wrap gap-2">
-                    {cityObj.nearby.filter((n) => findCity(n)).map((name) => (
-                      <button
-                        key={name}
-                        type="button"
-                        onClick={() =>
-                          navigate(
-                            searchUrl({ city: name, checkIn, checkOut, month: checkIn ? "" : month, adults, children: kids, rooms })
-                          )
-                        }
-                        className="rounded-full border border-neutral-300 bg-white px-4 py-2 text-sm font-semibold hover:border-neutral-700"
-                      >
-                        {name}
-                      </button>
-                    ))}
+                    {cityObj.nearby
+                      .filter((n) => findCity(n))
+                      .map((name) => (
+                        <button
+                          key={name}
+                          type="button"
+                          onClick={() =>
+                            navigate(
+                              searchUrl({
+                                city: name,
+                                checkIn,
+                                checkOut,
+                                month: checkIn ? "" : month,
+                                adults,
+                                children: kids,
+                                rooms,
+                              })
+                            )
+                          }
+                          className="rounded-full border border-neutral-300 bg-white px-4 py-2 text-sm font-semibold hover:border-neutral-700"
+                        >
+                          {name}
+                        </button>
+                      ))}
+
                     <button
                       type="button"
-                      onClick={() => navigate(`/destination/${cityObj.name.toLowerCase()}`)}
+                      onClick={() =>
+                        navigate(
+                          `/destination/${cityObj.name.toLowerCase()}`
+                        )
+                      }
                       className="rounded-full bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
                     >
                       About {cityObj.name}
@@ -924,7 +1503,9 @@ function ResultsPage() {
             reviewCount: parseCount(galleryHotel.reviews),
             amenities: galleryHotel.facilities,
           }}
-          isFavorite={favorites.some((h) => h.id === galleryHotel.id)}
+          isFavorite={favorites.some(
+            (h) => h.id === galleryHotel.id
+          )}
           onFavorite={() => toggleFavorite(galleryHotel)}
           onClose={() => setGalleryHotel(null)}
         />
@@ -933,7 +1514,7 @@ function ResultsPage() {
       {toast && (
         <div
           role="status"
-          className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full bg-neutral-900 px-5 py-3 text-sm font-semibold text-white shadow-lg"
+          className="fixed bottom-6 left-1/2 z-[110] -translate-x-1/2 rounded-full bg-neutral-900 px-5 py-3 text-sm font-semibold text-white shadow-lg"
         >
           {toast}
         </div>
@@ -942,13 +1523,20 @@ function ResultsPage() {
   );
 }
 
+
 function NotFound({ query, onPick }) {
   return (
     <div className="rounded-2xl bg-white p-10 text-center">
       <h1 className="text-2xl font-bold">
-        {query ? `We couldn't find hotels in “${query}”` : "Where would you like to stay?"}
+        {query
+          ? `We couldn't find hotels in “${query}”`
+          : "Where would you like to stay?"}
       </h1>
-      <p className="mt-2 text-neutral-600">Check the spelling or pick one of these popular destinations.</p>
+
+      <p className="mt-2 text-neutral-600">
+        Check the spelling or pick one of these popular destinations.
+      </p>
+
       <div className="mt-5 flex flex-wrap justify-center gap-2">
         {cities.slice(0, 12).map((c) => (
           <button

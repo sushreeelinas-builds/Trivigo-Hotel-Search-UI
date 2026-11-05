@@ -5,7 +5,6 @@ export default function Favorites() {
   const navigate = useNavigate();
   const [favorites, setFavorites] = useState([]);
 
-  // Load favorite hotels
   useEffect(() => {
     const loadFavorites = () => {
       try {
@@ -36,7 +35,6 @@ export default function Favorites() {
     };
   }, []);
 
-  // Remove Favorite
   const removeFavorite = (id) => {
     const updated = favorites.filter(
       (hotel) => hotel.id !== id
@@ -54,7 +52,6 @@ export default function Favorites() {
     );
   };
 
-  // Open Hotel Details
   const openHotel = (hotel) => {
     localStorage.setItem(
       "trivagoSelectedHotel",
@@ -69,7 +66,6 @@ export default function Favorites() {
   return (
     <div className="min-h-screen bg-gray-50">
 
-      {/* Header */}
       <header className="flex items-center justify-between border-b bg-white px-6 py-5">
 
         <button
@@ -89,7 +85,6 @@ export default function Favorites() {
 
       </header>
 
-      {/* Main Content */}
       <main className="mx-auto max-w-6xl px-5 py-10">
 
         <h1 className="text-3xl font-extrabold text-gray-900">
@@ -101,7 +96,6 @@ export default function Favorites() {
           Your saved hotels in one place.
         </p>
 
-        {/* Empty State */}
         {favorites.length === 0 ? (
 
           <div className="mt-10 rounded-2xl bg-white p-12 text-center shadow-sm">
@@ -129,7 +123,6 @@ export default function Favorites() {
 
         ) : (
 
-          /* Favorite Hotel Cards */
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
             {favorites.map((hotel) => (
@@ -139,7 +132,6 @@ export default function Favorites() {
                 className="overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
               >
 
-                {/* Hotel Image */}
                 <img
                   src={hotel.image}
                   alt={hotel.name}
@@ -156,7 +148,6 @@ export default function Favorites() {
                     📍 {hotel.location}
                   </p>
 
-                  {/* Rating and Price */}
                   <div className="mt-3 flex items-center justify-between">
 
                     <span className="rounded bg-green-700 px-2 py-1 text-sm font-bold text-white">
@@ -169,7 +160,6 @@ export default function Favorites() {
 
                   </div>
 
-                  {/* Action Buttons */}
                   <div className="mt-5 flex gap-2">
 
                     <button
